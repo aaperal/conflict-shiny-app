@@ -1,0 +1,51 @@
+---
+title: "Project Proposal"
+date: "11/3/2017"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+##Group Members
+Alan Peral: Director of Computation and Project Manager
+Kadija Yilla: Reporter and Task Manager
+Both: Director of Research and Facilitator
+
+##Title
+Changes in Demographic after Armed Conflict
+
+##Purpose
+We want to explore how armed conflict in a nation affects people’s lives. To that end, we have chosen a few variables that we think tend to be indicative of the general quality of life of a population. We want to see if there is any noticeable difference in these various measures of socioeconomic status before and after armed conflict. The reasons for this are quite obvious: war impacts people profoundly, and yet countries like the US insist on engaging in numerous armed conflicts regardless of the outcome. We hope people will realize that there might be some long lasting impacts of war, and that soldiers are not heroes.
+
+##Data
+One source of data is the “Country Socioeconomic Status Scores” from Kaggle 
+(https://www.kaggle.com/sdorius/globses/data) which includes the overall score of socioeconomic status. 
+
+We can merge this dataset with variables from The World Bank which has numerous variables we can include (https://data.worldbank.org/indicator). We will merge based on country, This will allow us to delve further into the individual scores and look at any component we find of interest.  
+
+Another data set of interest is the armed conflict data that looks at various armed conflict from 1948 to present (https://www.prio.org/Data/Armed-Conflict/UCDP-PRIO/). 
+
+We may even use the wikipedia API to retrieve a more detailed list of armed conflicts and turn that information into a usable dataset. 
+
+##Variables
+1. Discrete Variables:
+    + Country: the names of the countries being analyzed
+
+2. Continuous Variables:
+    + Year of Armed Conflict: in what year the conflict occurred
+    + Socioeconomic Status Score: population weighted measure of socioeconomic status
+    + GDP/Capita: the gdp per country scaled by the population
+    + Literacy Rate: (by gender) the percent of the population that can read, seperated by gender
+    + Unemployment: the percent of the population that is unemployed
+    + Inflation: the inflation rate
+    + Research and Development expenditure: the percentage of GDP spend on research and development
+    + Population living in the largest city: the proportion of the population living in the largest city
+    + Death rate: mortality rate
+    + Access to electricity: percent of population that has access to electricity
+    + Life expectancy at birth: life expectancy at birth, separated by gender
+
+##End Product
+A shiny application that allows the user to analyze various changes in the population before and after intervention. This will be located on a map so the changes by can analyzed graphically to evaluate correlations by location/boundaries. 
