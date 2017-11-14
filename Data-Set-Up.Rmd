@@ -1,0 +1,43 @@
+---
+title: "Data-Set-Up"
+author: "Alan, Kadija"
+date: "11/13/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+
+# format to download the data on the next line:
+# dat = WDI(indicator='NY.GDP.PCAP.KD', country=c('MX','CA','US'), start=1960, end=2012)
+# we can find indicators using the WDIsearch() method
+library(WDI)
+WDIsearch('children')
+
+# health expenditure, total (% of GDP) indicator = SH.XPD.TOTL.ZS
+# fertility rate, tota (births per total) indicator = SP.DYN.TFRT.IN
+# life expectancy at birth, female (years) indicator = SP.DYN.LE00.FE.IN
+# life expectancy at birth, total (years) indicator = SP.DYN.LE00.IN
+# mortality rate, under-5 (per 1000 live births) indicator = SH.DYN.MORT
+# children in employment, total (% of children 7-14) indicator = SL.TLF.0714.ZS
+# labor force, female (% of total labor force) indicator = SL.TLF.TOTL.FE.ZS
+# labor force participation rate, female (% of female population ages 15+)(modeled ILO estimate) indicator = SL.TLF.CACT.FE.ZS
+# GINI index (World Bank estimate) indicator = SI.POV.GINI
+# Refugee population by country or territory of origin () indicator = SM.POP.REFG.OR
+# Refugee population by country or territory of asylum () indicator = SM.POP.REFG
+# Improved sanitation facilities (% of population with access) indicator = SH.STA.ACSN
+# Improved water source (% of population with access) indicator = SH.H2O.SAFE.ZS
+# Access to electricity (% of population) indicator = EG.ELC.ACCS.ZS
+# Population living in slums (% of urban population) indicator = EN.POP.SLUM.UR.ZS
+
+
+new_cache = WDIcache()
+WDIsearch('slums', cache=new_cache)
+
+
+```
