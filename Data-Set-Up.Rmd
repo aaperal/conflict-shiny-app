@@ -41,3 +41,47 @@ WDIsearch('slums', cache=new_cache)
 
 
 ```
+
+```{r}
+require(plyr)
+require(WDI)
+#stored the required variables in a vector to access all at once
+ind = c("health_expenditure" = "SH.XPD.TOTL.ZS",
+        "fetility_rate" = "SP.DYN.TFRT.IN",
+        "life_expectancy_female" = "SP.DYN.LE00.FE.IN",
+        "mortality_rate_under5" = "SH.DYN.MORT",
+        "children_employment" = " SL.TLF.0714.ZS",
+        "labor_force_female" = " SL.TLF.TOTL.FE.ZS",
+        "labor_force_Particpation_rate" ='SL.TLF.CACT.FE.ZS',
+        "gini_index" = "SI.POV.GINI",
+        "refugee_origin" = "SM.POP.REFG.OR",
+        "refugee_asylum" = "SM.POP.REFG",
+        "sanitation_access" = "SH.STA.ACSN",
+        "water_access" = "SH.H2O.SAFE.ZS",
+        "electricity_access" = "EG.ELC.ACCS.ZS",
+        "slums_population" = "EN.POP.SLUM.UR.ZS"
+        )
+
+WBD.data = WDI(indicator = rnm)
+head(WBD.data)
+
+#renamed variables to be more appropriate
+rnm = c("SH.XPD.TOTL.ZS" = "health_expenditure",
+        "SP.DYN.TFRT.IN" = "fetility_rate",
+        "SP.DYN.LE00.FE.IN" = "life_expectancy_female",
+        "SH.DYN.MORT" = "mortality_rate_under5",
+        "SL.TLF.0714.ZS" = "children_employment",
+        "SL.TLF.TOTL.FE.ZS" = "labor_force_female",
+        "SL.TLF.CACT.FE.ZS" = "labor_force_Particpation_rate",
+        "SI.POV.GINI" = "gini_index",
+        "SM.POP.REFG.OR" = "refugee_origin",
+        "SM.POP.REFG" = "refugee_asylum",
+        "SH.STA.ACSN" = "sanitation_access",
+        "SH.H2O.SAFE.ZS" = "water_access",
+        "EG.ELC.ACCS.ZS" = "electricity_access",
+        "EN.POP.SLUM.UR.ZS" = "slums_population"
+        )
+
+WBD.data2 <- rename(WBD.data, rnm)
+```
+
