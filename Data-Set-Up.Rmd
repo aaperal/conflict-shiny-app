@@ -93,3 +93,10 @@ rnm = c("SH.XPD.TOTL.ZS" = "health_expenditure",
 WBD.data2 <- rename(WBD.data, rnm)
 ```
 
+
+```{r}
+#downloaded and retrieved the conflict data set
+conflict_data <- read_csv("~/Documents/SeniorSZN/MA154/Project/ma154-project21-teamconflict/ucdp-prio-acd-171.csv")
+View(conflict_data)
+```
+
