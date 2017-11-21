@@ -17,15 +17,10 @@ library(readr)
 SES_data <- read_csv("GLOB.SES.csv")
 ```
 
-
-
 ```{r}
-
-# format to download the data on the next line:
-# dat = WDI(indicator='NY.GDP.PCAP.KD', country=c('MX','CA','US'), start=1960, end=2012)
-# we can find indicators using the WDIsearch() method
+require(plyr)
+require(WDI)
 library(WDI)
-WDIsearch('children')
 
 # health expenditure, total (% of GDP) indicator = SH.XPD.TOTL.ZS
 # fertility rate, tota (births per total) indicator = SP.DYN.TFRT.IN
@@ -44,15 +39,6 @@ WDIsearch('children')
 # Population living in slums (% of urban population) indicator = EN.POP.SLUM.UR.ZS
 
 
-new_cache = WDIcache()
-WDIsearch('slums', cache=new_cache)
-
-
-```
-
-```{r}
-require(plyr)
-require(WDI)
 #stored the required variables in a vector to access all at once
 ind = c("health_expenditure" = "SH.XPD.TOTL.ZS",
         "fetility_rate" = "SP.DYN.TFRT.IN",
@@ -70,8 +56,7 @@ ind = c("health_expenditure" = "SH.XPD.TOTL.ZS",
         "slums_population" = "EN.POP.SLUM.UR.ZS"
         )
 
-WBD.data = WDI(indicator = rnm)
-head(WBD.data)
+WBD.data = WDI(indicator = ind)
 
 #renamed variables to be more appropriate
 rnm = c("SH.XPD.TOTL.ZS" = "health_expenditure",
@@ -91,6 +76,7 @@ rnm = c("SH.XPD.TOTL.ZS" = "health_expenditure",
         )
 
 WBD.data2 <- rename(WBD.data, rnm)
+head(WBD.data2)
 ```
 
 
