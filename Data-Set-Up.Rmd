@@ -56,7 +56,7 @@ ind = c("health_expenditure" = "SH.XPD.TOTL.ZS",
         "slums_population" = "EN.POP.SLUM.UR.ZS"
         )
 
-WBD.data = WDI(indicator = ind)
+WBD.data = WDI(indicator = ind, start=1960, end=2015)
 
 #renamed variables to be more appropriate
 rnm = c("SH.XPD.TOTL.ZS" = "health_expenditure",
@@ -86,3 +86,7 @@ library(readr)
 conflict_data <- read_csv("ucdp-prio-acd-171.csv")
 ```
 
+```{r}
+#merging to the SES data set and the WBD data set
+WBD.SES <- merge(WBD.data2, SES_data, by=c("country", "year"), all=TRUE)
+```
