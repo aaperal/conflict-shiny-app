@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 #we downloaded the data set of current socioeconomic scores from Kaggle
 #we import the data into a data frame on R
 library(readr)
-SES_data <- read_csv("~/Documents/SeniorSZN/MA154/Project/ma154-project21-teamconflict/GLOB.SES.csv")
+SES_data <- read_csv("GLOB.SES.csv")
 ```
 
 
@@ -96,7 +96,7 @@ WBD.data2 <- rename(WBD.data, rnm)
 
 ```{r}
 #downloaded and retrieved the conflict data set
-conflict_data <- read_csv("~/Documents/SeniorSZN/MA154/Project/ma154-project21-teamconflict/ucdp-prio-acd-171.csv")
-View(conflict_data)
+library(readr)
+conflict_data <- read_csv("ucdp-prio-acd-171.csv")
 ```
 
