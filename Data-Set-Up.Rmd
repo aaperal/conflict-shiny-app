@@ -44,8 +44,8 @@ ind = c("health_expenditure" = "SH.XPD.TOTL.ZS",
         "fetility_rate" = "SP.DYN.TFRT.IN",
         "life_expectancy_female" = "SP.DYN.LE00.FE.IN",
         "mortality_rate_under5" = "SH.DYN.MORT",
-        "children_employment" = " SL.TLF.0714.ZS",
-        "labor_force_female" = " SL.TLF.TOTL.FE.ZS",
+        "children_employment" = "SL.TLF.0714.ZS",
+        "labor_force_female" = "SL.TLF.TOTL.FE.ZS",
         "labor_force_Particpation_rate" ='SL.TLF.CACT.FE.ZS',
         "gini_index" = "SI.POV.GINI",
         "refugee_origin" = "SM.POP.REFG.OR",
@@ -90,3 +90,21 @@ conflict_data <- read_csv("ucdp-prio-acd-171.csv")
 #merging to the SES data set and the WBD data set
 WBD.SES <- merge(WBD.data2, SES_data, by=c("country", "year"), all=TRUE)
 ```
+
+```{r}
+difference <- setdiff(conflict_data$location, WBD.SES$country)
+
+#to rename location into country 
+conflict_data$location <- as.character(conflict_data$location)
+
+conflict_data$location[conflict_data$location == "Cambodia (Kampuchea)"] <- "Cambodia"
+
+conflict_data$location[rep(conflict_data$location == "France, Thailand", 6)]
+
+#duplicate multiple countries with the same values 
+split <- strsplit("France, Thailand", ", ")
+split <- unlist(split)
+
+
+```
+
