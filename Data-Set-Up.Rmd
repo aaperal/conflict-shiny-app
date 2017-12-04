@@ -230,9 +230,9 @@ conflict_data$location[conflict_data$location == "Ivory Coast"] <- "Cote d'Ivoir
 conflict_data$location[conflict_data$location == "Brunei"] <- "Brunei Darussalam"
 
 
-#change the following names in WBD set:
+#change the following names in WBD.SES set:
 #"Korea, Dem. People's Rep." to "North Korea"
-WBD.SES$country[WBD.SES$country == "Korea, Dem. People's Rep."] <- "North Korea"
+WBD.SES$country[WBD.SES$country == "Korea, Dem. People’s Rep."] <- "North Korea"
 #"Korea, Rep." to "South Korea"
 WBD.SES$country[WBD.SES$country == "Korea, Rep."] <- "South Korea"
 #"Yemen, Rep." to "Yemen"
