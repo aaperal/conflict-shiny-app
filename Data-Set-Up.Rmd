@@ -84,6 +84,7 @@ head(WBD.data2)
 #downloaded and retrieved the conflict data set
 library(readr)
 conflict_data <- read_csv("ucdp-prio-acd-171.csv")
+conflict_data$location <- as.character(conflict_data$location)
 ```
 
 ```{r}
@@ -92,12 +93,7 @@ WBD.SES <- merge(WBD.data2, SES_data, by=c("country", "year"), all=TRUE)
 ```
 
 ```{r}
-#to rename location into country 
-conflict_data$location <- as.character(conflict_data$location)
-
-conflict_data$location[conflict_data$location == "Cambodia (Kampuchea)"] <- "Cambodia"
-
-#duplicate multiple countries with the same values 
+#function to duplicate multiple countries with the same values 
 replicate_fcn <- function(location.vector) {
   conflict.expanded <- data.frame()
   split <- unlist(strsplit(location.vector, ", "))
