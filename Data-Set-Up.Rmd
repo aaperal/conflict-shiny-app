@@ -83,8 +83,8 @@ head(WBD.data2)
 ```{r}
 #downloaded and retrieved the conflict data set
 library(readr)
-conflict_data <- read_csv("ucdp-prio-acd-171.csv")
-conflict_data$location <- as.character(conflict_data$location)
+conflict.data <- read_csv("ucdp-prio-acd-171.csv")
+conflict.data$location <- as.character(conflict.data$location)
 ```
 
 ```{r}
@@ -153,13 +153,13 @@ replicate_fcn <- function(location.vector) {
   len_split <- length(split)   
   
   #find the row which has the stringed values 
-  rownum <- unlist(which(conflict_data$location == location.vector))
+  rownum <- unlist(which(conflict.data$location == location.vector))
   rowlength <- length(rownum)
   
   #replicate the specific row based on the row number 
   for(i in 1:rowlength){
     conflict.expanded <- rbind(conflict.expanded, 
-                               conflict_data[rep(rownum[i],each=len_split),])
+                               conflict.data[rep(rownum[i],each=len_split),])
   }
   conflict.expanded <- conflict.expanded[order(conflict.expanded$year),]  
   
@@ -180,11 +180,11 @@ replicate_fcn <- function(location.vector) {
   del.end <- rownum[rowlength]
   del.list <- seq(del.start,del.end,1)
   #delete unreplicated rows
-  conflict_data <- conflict_data[-del.list,]
+  conflict.data <- conflict.data[-del.list,]
   
   #append replicated rows to end of dataset
-  conflict_data <- rbind(conflict_data, conflict.expanded)
-  conflict_data
+  conflict.data <- rbind(conflict.data, conflict.expanded)
+  conflict.data
 }
 
 # at this point conflict.expanded will be a data frame
@@ -196,91 +196,91 @@ replicate_fcn <- function(location.vector) {
 ```
 
 ```{r}
-difference <- setdiff(conflict_data$location, WBD.SES$country)
+difference <- setdiff(conflict.data$location, WBD.SES$country)
 
 #values which we have to change either by replicating or renaming
 difference
 
 #replicate all necessary values
-conflict_data <- replicate_fcn(difference[3])
-conflict_data <- replicate_fcn(difference[4])
-conflict_data <- replicate_fcn(difference[6])
-conflict_data <- replicate_fcn(difference[9])
-conflict_data <- replicate_fcn(difference[10])
-conflict_data <- replicate_fcn(difference[12])
-conflict_data <- replicate_fcn(difference[13])
-conflict_data <- replicate_fcn(difference[15])
-conflict_data <- replicate_fcn(difference[17])
-conflict_data <- replicate_fcn(difference[18])
-conflict_data <- replicate_fcn(difference[19])
-conflict_data <- replicate_fcn(difference[20])
-conflict_data <- replicate_fcn(difference[22])
-conflict_data <- replicate_fcn(difference[23])
-conflict_data <- replicate_fcn(difference[25])
-conflict_data <- replicate_fcn(difference[26])
-conflict_data <- replicate_fcn(difference[27])
-conflict_data <- replicate_fcn(difference[28])
-conflict_data <- replicate_fcn(difference[30])
-conflict_data <- replicate_fcn(difference[31])
-conflict_data <- replicate_fcn(difference[32])
-conflict_data <- replicate_fcn(difference[33])
-conflict_data <- replicate_fcn(difference[34])
-conflict_data <- replicate_fcn(difference[35])
-conflict_data <- replicate_fcn(difference[36])
-conflict_data <- replicate_fcn(difference[38])
-conflict_data <- replicate_fcn(difference[39])
-conflict_data <- replicate_fcn(difference[40])
-conflict_data <- replicate_fcn(difference[41])
-conflict_data <- replicate_fcn(difference[42])
-conflict_data <- replicate_fcn(difference[43])
-conflict_data <- replicate_fcn(difference[44])
-conflict_data <- replicate_fcn(difference[45])
-conflict_data <- replicate_fcn(difference[46])
-conflict_data <- replicate_fcn(difference[47])
-conflict_data <- replicate_fcn(difference[48])
-conflict_data <- replicate_fcn(difference[49])
-conflict_data <- replicate_fcn(difference[51])
-conflict_data <- replicate_fcn(difference[54])
-conflict_data <- replicate_fcn(difference[55])
-conflict_data <- replicate_fcn(difference[56])
-conflict_data <- replicate_fcn(difference[58])
-conflict_data <- replicate_fcn(difference[59])
-conflict_data <- replicate_fcn(difference[60])
-conflict_data <- replicate_fcn(difference[61])
-conflict_data <- replicate_fcn(difference[62])
-conflict_data <- replicate_fcn(difference[63])
-conflict_data <- replicate_fcn(difference[65])
+conflict.data <- replicate_fcn(difference[3])
+conflict.data <- replicate_fcn(difference[4])
+conflict.data <- replicate_fcn(difference[6])
+conflict.data <- replicate_fcn(difference[9])
+conflict.data <- replicate_fcn(difference[10])
+conflict.data <- replicate_fcn(difference[12])
+conflict.data <- replicate_fcn(difference[13])
+conflict.data <- replicate_fcn(difference[15])
+conflict.data <- replicate_fcn(difference[17])
+conflict.data <- replicate_fcn(difference[18])
+conflict.data <- replicate_fcn(difference[19])
+conflict.data <- replicate_fcn(difference[20])
+conflict.data <- replicate_fcn(difference[22])
+conflict.data <- replicate_fcn(difference[23])
+conflict.data <- replicate_fcn(difference[25])
+conflict.data <- replicate_fcn(difference[26])
+conflict.data <- replicate_fcn(difference[27])
+conflict.data <- replicate_fcn(difference[28])
+conflict.data <- replicate_fcn(difference[30])
+conflict.data <- replicate_fcn(difference[31])
+conflict.data <- replicate_fcn(difference[32])
+conflict.data <- replicate_fcn(difference[33])
+conflict.data <- replicate_fcn(difference[34])
+conflict.data <- replicate_fcn(difference[35])
+conflict.data <- replicate_fcn(difference[36])
+conflict.data <- replicate_fcn(difference[38])
+conflict.data <- replicate_fcn(difference[39])
+conflict.data <- replicate_fcn(difference[40])
+conflict.data <- replicate_fcn(difference[41])
+conflict.data <- replicate_fcn(difference[42])
+conflict.data <- replicate_fcn(difference[43])
+conflict.data <- replicate_fcn(difference[44])
+conflict.data <- replicate_fcn(difference[45])
+conflict.data <- replicate_fcn(difference[46])
+conflict.data <- replicate_fcn(difference[47])
+conflict.data <- replicate_fcn(difference[48])
+conflict.data <- replicate_fcn(difference[49])
+conflict.data <- replicate_fcn(difference[51])
+conflict.data <- replicate_fcn(difference[54])
+conflict.data <- replicate_fcn(difference[55])
+conflict.data <- replicate_fcn(difference[56])
+conflict.data <- replicate_fcn(difference[58])
+conflict.data <- replicate_fcn(difference[59])
+conflict.data <- replicate_fcn(difference[60])
+conflict.data <- replicate_fcn(difference[61])
+conflict.data <- replicate_fcn(difference[62])
+conflict.data <- replicate_fcn(difference[63])
+conflict.data <- replicate_fcn(difference[65])
 
 #rename Cambodia (Kampuchea) to "Cambodia"
-conflict_data$location[conflict_data$location == "Cambodia (Kampuchea)"] <- "Cambodia"
+conflict.data$location[conflict.data$location == "Cambodia (Kampuchea)"] <- "Cambodia"
 #rename "Russia (Soviet Union)" to "Russia"
-conflict_data$location[conflict_data$location == "Russia (Soviet Union)"] <- "Russia"
+conflict.data$location[conflict.data$location == "Russia (Soviet Union)"] <- "Russia"
 #rename "Madagascar (Malagasy)" to "Madagascar"
-conflict_data$location[conflict_data$location == "Madagascar (Malagasy)"] <- "Madagascar"
+conflict.data$location[conflict.data$location == "Madagascar (Malagasy)"] <- "Madagascar"
 #rename North/South Yemen to Yemen
-conflict_data$location[conflict_data$location == "Yemen (North Yemen)"] <- "Yemen"
-conflict_data$location[conflict_data$location == "South Yemen"] <- "Yemen"
+conflict.data$location[conflict.data$location == "Yemen (North Yemen)"] <- "Yemen"
+conflict.data$location[conflict.data$location == "South Yemen"] <- "Yemen"
 #rename North/South Vietnam to "Vietnam"
-conflict_data$location[conflict_data$location == "Vietnam (North Vietnam)"] <- "Vietnam"
-conflict_data$location[conflict_data$location == "South Vietnam"] <- "Vietnam"
+conflict.data$location[conflict.data$location == "Vietnam (North Vietnam)"] <- "Vietnam"
+conflict.data$location[conflict.data$location == "South Vietnam"] <- "Vietnam"
 #rename "United States of America" to "United States"
-conflict_data$location[conflict_data$location == "United States of America"] <- "United States"
+conflict.data$location[conflict.data$location == "United States of America"] <- "United States"
 #rename "Myanmar (Burma)" to "Myanmar"
-conflict_data$location[conflict_data$location == "Myanmar (Burma)"] <- "Myanmar"
+conflict.data$location[conflict.data$location == "Myanmar (Burma)"] <- "Myanmar"
 #rename "DR Congo (Zaire)" to "Congo, Dem. Rep."
-conflict_data$location[conflict_data$location == "DR Congo (Zaire)"] <- "Congo, Dem. Rep."
+conflict.data$location[conflict.data$location == "DR Congo (Zaire)"] <- "Congo, Dem. Rep."
 #rename "Rumania" to "Romania"
-conflict_data$location[conflict_data$location == "Rumania"] <- "Romania"
+conflict.data$location[conflict.data$location == "Rumania"] <- "Romania"
 #rename "Zimbabwe (Rhodesia)" to "Zimbabwe"
-conflict_data$location[conflict_data$location == "Zimbabwe (Rhodesia)"] <- "Zimbabwe"
+conflict.data$location[conflict.data$location == "Zimbabwe (Rhodesia)"] <- "Zimbabwe"
 #rename "Serbia (Yugoslavia)" to "Serbia"
-conflict_data$location[conflict_data$location == "Serbia (Yugoslavia)"] <- "Serbia"
+conflict.data$location[conflict.data$location == "Serbia (Yugoslavia)"] <- "Serbia"
 #rename "Bosnia-Herzegovina" to "Bosnia and Herzegovina"
-conflict_data$location[conflict_data$location == "Bosnia-Herzegovina"] <- "Bosnia and Herzegovina"
+conflict.data$location[conflict.data$location == "Bosnia-Herzegovina"] <- "Bosnia and Herzegovina"
 #rename "Ivory Coast" to "Cote d'Ivoire"
-conflict_data$location[conflict_data$location == "Ivory Coast"] <- "Cote d'Ivoire"
+conflict.data$location[conflict.data$location == "Ivory Coast"] <- "Cote d'Ivoire"
 #rename "Brunei" to "Brunei Darussalam"
-conflict_data$location[conflict_data$location == "Brunei"] <- "Brunei Darussalam"
+conflict.data$location[conflict.data$location == "Brunei"] <- "Brunei Darussalam"
 
 
 
@@ -289,7 +289,7 @@ conflict_data$location[conflict_data$location == "Brunei"] <- "Brunei Darussalam
 #issues with "Taiwan" and "Hyderabad"
 
 #values which we have issues with
-difference <- setdiff(conflict_data$location, WBD.SES$country)
+difference <- setdiff(conflict.data$location, WBD.SES$country)
 difference
 
 
@@ -298,7 +298,7 @@ difference
 
 ```{r}
 #merging to the WBD/SES data set and the conflict set
-WBD.SES.conflict <- merge(WBD.SES, conflict_data, by.x=c("country"), by.y=c("location"), all=TRUE)
+WBD.SES.conflict <- merge(WBD.SES, conflict.data, by.x=c("country"), by.y=c("location"), all=TRUE)
 ```
 
 
