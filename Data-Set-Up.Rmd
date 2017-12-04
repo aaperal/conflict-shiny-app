@@ -103,24 +103,53 @@ conflict_data$location[conflict_data$location == "Cambodia (Kampuchea)"] <- "Cam
 #duplicate multiple countries with the same values 
 conflict_data$location[rep(conflict_data$location == "France, Thailand", 6)]
 
-split <- strsplit("France, Thailand", ", ")
-split <- unlist(split)
-
-#find the row which has the stringed values 
-rownum <- unlist(which(conflict_data$location == "India, Pakistan"))
-rowlength <- length(rownum)
-
-#replicate the specific row based on the row number 
-conflict.expanded <- data.frame()
-
-
-for(i in 1:rowlength){
-  conflict.expanded <- rbind(conflict.expanded, conflict_data[rep(rownum[i],each=2),])
+replicate_fcn <- function(location.vector) {
+  conflict.expanded <- data.frame()
+  split <- unlist(strsplit(location.vector, ", "))
+  len_split <- length(split)   
+  
+  #find the row which has the stringed values 
+  rownum <- unlist(which(conflict_data$location == location.vector))
+  rowlength <- length(rownum)
+  
+  #replicate the specific row based on the row number 
+  for(i in 1:rowlength){
+    conflict.expanded <- rbind(conflict.expanded, 
+                               conflict_data[rep(rownum[i],each=len_split),])
+  }
+  conflict.expanded <- conflict.expanded[order(conflict.expanded$year),]  
+  
+  
+  
+  for(j in seq(1,nrow(conflict.expanded),1)){
+    mod_val <- j %% len_split
+    if ((mod_val) == 0) {
+        mod_val <- len_split
+      }
+    conflict.expanded$location[j] <- split[mod_val]
+  }
+  
+  #we now delete the original unreplicated rows from the dataset
+  # numrow[1] has the first row number of the unreplicated row
+  del.start <- rownum[1]
+  #the last row
+  del.end <- rownum[rowlength]
+  del.list <- seq(del.start,del.end,1)
+  conflict_data <- conflict_data[-del.list,]
+  
+  conflict_data <- rbind(conflict_data, conflict.expanded)
+  conflict_data
 }
-conflict.expanded[order(conflict.expanded$year),]  
-for(j in seq(1,nrow(conflict.expanded),2)){
-  conflict.expanded$location[j] <- "India"
-  conflict.expanded$location[j+1] <- "Pakistan"
-}
+
+conflict_data <- replicate_fcn("India, Pakistan")
+# at this point conflict.expanded will be a data frame
+# with one set of expanded rows
+# we want to now add this set of expanded rows to
+# conflict.data and repeat the process for all the rows
+# that need duplication
+
+
+
+
 ```
 
