@@ -107,9 +107,20 @@ split <- strsplit("France, Thailand", ", ")
 split <- unlist(split)
 
 #find the row which has the stringed values 
-rownum <- unlist(which(conflict_data$location == "France, Thailand"))
+rownum <- unlist(which(conflict_data$location == "India, Pakistan"))
+rowlength <- length(rownum)
 
 #replicate the specific row based on the row number 
-conflict.expanded <- conflict_data[rep(rownum,each=3),]
+conflict.expanded <- data.frame()
+
+
+for(i in 1:rowlength){
+  conflict.expanded <- rbind(conflict.expanded, conflict_data[rep(rownum[i],each=2),])
+}
+conflict.expanded[order(conflict.expanded$year),]  
+for(j in seq(1,nrow(conflict.expanded),2)){
+  conflict.expanded$location[j] <- "India"
+  conflict.expanded$location[j+1] <- "Pakistan"
+}
 ```
 
