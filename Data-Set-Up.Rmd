@@ -298,7 +298,7 @@ difference
 
 ```{r}
 #merging to the WBD/SES data set and the conflict set
-WBD.SES.conflict <- merge(WBD.SES, conflict.data, by.x=c("country"), by.y=c("location"), all=TRUE)
+WBD.SES.conflict <- merge(conflict.data, WBD.SES, by.y=c("country", "year"), by.x=c("location", "year"), all=TRUE)
 ```
 
 
