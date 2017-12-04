@@ -229,6 +229,7 @@ conflict_data$location[conflict_data$location == "Ivory Coast"] <- "Cote d'Ivoir
 #rename "Brunei" to "Brunei Darussalam"
 conflict_data$location[conflict_data$location == "Brunei"] <- "Brunei Darussalam"
 
+
 #change the following names in WBD set:
 #"North Korea" 
 #"South Korea" 
@@ -237,6 +238,11 @@ conflict_data$location[conflict_data$location == "Brunei"] <- "Brunei Darussalam
 #"Congo, Dem Rep" to "Congo, Dem. Rep."
 
 #issues with "Taiwan", "Hyderabad", and "Laos"
+
+difference <- setdiff(conflict_data$location, WBD.SES$country)
+
+#values which we have issues with
+difference
 
 ```
 
