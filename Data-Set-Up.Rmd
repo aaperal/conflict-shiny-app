@@ -94,17 +94,22 @@ WBD.SES <- merge(WBD.data2, SES_data, by=c("country", "year"), all=TRUE)
 ```{r}
 difference <- setdiff(conflict_data$location, WBD.SES$country)
 
+difference
 #to rename location into country 
 conflict_data$location <- as.character(conflict_data$location)
 
 conflict_data$location[conflict_data$location == "Cambodia (Kampuchea)"] <- "Cambodia"
 
+#duplicate multiple countries with the same values 
 conflict_data$location[rep(conflict_data$location == "France, Thailand", 6)]
 
-#duplicate multiple countries with the same values 
 split <- strsplit("France, Thailand", ", ")
 split <- unlist(split)
 
+#find the row which has the stringed values 
+rownum <- unlist(which(conflict_data$location == "France, Thailand"))
 
+#replicate the specific row based on the row number 
+conflict.expanded <- conflict_data[rep(rownum,each=3),]
 ```
 
