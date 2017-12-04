@@ -88,6 +88,59 @@ conflict_data$location <- as.character(conflict_data$location)
 ```
 
 ```{r}
+difference <- setdiff(SES_data$country, WBD.data2$country)
+difference
+# we need to rename a couple of countries in both the SES dataset
+# and the WB dataset. We normalize country names so that we can 
+# merge the two datasets.
+
+# renames in SES
+# rename Lao to Laos 
+SES_data$country[SES_data$country == "Lao"] <- "Laos"
+# rename Congo, Dem Rep to Congo, Dem. Rep.
+SES_data$country[SES_data$country == "Congo, Dem Rep"] <- "Congo, Dem. Rep."
+# Trinidad & Tobago to Trinidad and Tobago
+SES_data$country[SES_data$country == "Trinidad & Tobago"] <- "Trinidad and Tobago"
+
+# renames in WBD
+
+# rename Congo, Rep. to Congo
+WBD.data2$country[WBD.data2$country == "Congo, Rep."] <- "Congo"
+# rename Egypt, Arab Rep. to Egypt
+WBD.data2$country[WBD.data2$country == "Egypt, Arab Rep."] <- "Egypt"
+# rename Gambia, The to Gambia
+WBD.data2$country[WBD.data2$country == "Gambia, The"] <- "Gambia"
+# rename Hong Kong SAR, China to Hong Kong
+WBD.data2$country[WBD.data2$country == "Hong Kong SAR, China"] <- "Hong Kong"
+# rename Iran, Islamic Rep. to Iran
+WBD.data2$country[WBD.data2$country == "Iran, Islamic Rep."] <- "Iran"
+# rename Kyrgyz Republic to Kyrgyzstan
+WBD.data2$country[WBD.data2$country == "Kyrgyz Republic"] <- "Kyrgyzstan"
+# rename Korea, Rep. to South Korea
+WBD.data2$country[WBD.data2$country == "Korea, Rep."] <- "South Korea"
+# rename Lao PDR to Laos
+WBD.data2$country[WBD.data2$country == "Lao PDR"] <- "Laos"
+# rename Macao SAR, China to Macao
+WBD.data2$country[WBD.data2$country == "Macao SAR, China"] <- "Macao"
+# rename Russian Federation to Russia
+WBD.data2$country[WBD.data2$country == "Russian Federation"] <- "Russia"
+# rename Slovak Republic to Slovakia
+WBD.data2$country[WBD.data2$country == "Slovak Republic"] <- "Slovakia"
+# rename Syrian Arab Republic to Syria
+WBD.data2$country[WBD.data2$country == "Syrian Arab Republic"] <- "Syria"
+# rename Venezuela, RB to Venezuela
+WBD.data2$country[WBD.data2$country == "Venezuela, RB"] <- "Venezuela"
+# rename Yemen, Rep. to Yemen
+WBD.data2$country[WBD.data2$country == "Yemen, Rep."] <- "Yemen"
+# rename Korea, Dem. People's Rep to North Korea
+WBD.data2$country[WBD.data2$country == "Korea, Dem. People’s Rep."] <- "North Korea"
+# rename Korea, Rep. to South Korea
+WBD.data2$country[WBD.data2$country == "Korea, Rep."] <- "South Korea"
+
+difference <- setdiff(SES_data$country, WBD.data2$country)
+difference
+
+
 #merging to the SES data set and the WBD data set
 WBD.SES <- merge(WBD.data2, SES_data, by=c("country", "year"), all=TRUE)
 ```
@@ -230,17 +283,7 @@ conflict_data$location[conflict_data$location == "Ivory Coast"] <- "Cote d'Ivoir
 conflict_data$location[conflict_data$location == "Brunei"] <- "Brunei Darussalam"
 
 
-#change the following names in WBD.SES set:
-#"Korea, Dem. People's Rep." to "North Korea"
-WBD.SES$country[WBD.SES$country == "Korea, Dem. People’s Rep."] <- "North Korea"
-#"Korea, Rep." to "South Korea"
-WBD.SES$country[WBD.SES$country == "Korea, Rep."] <- "South Korea"
-#"Yemen, Rep." to "Yemen"
-WBD.SES$country[WBD.SES$country == "Yemen, Rep."] <- "Yemen"
-#"Congo, Rep." to "Congo"
-WBD.SES$country[WBD.SES$country == "Congo, Rep."] <- "Congo"
-#"Congo, Dem Rep" to "Congo, Dem. Rep."
-WBD.SES$country[WBD.SES$country == "Congo, Dem Rep"] <- "Congo, Dem. Rep."
+
 
 
 #issues with "Taiwan", "Hyderabad", and "Laos"
@@ -248,6 +291,8 @@ WBD.SES$country[WBD.SES$country == "Congo, Dem Rep"] <- "Congo, Dem. Rep."
 #values which we have issues with
 difference <- setdiff(conflict_data$location, WBD.SES$country)
 difference
+
+
 
 ```
 
