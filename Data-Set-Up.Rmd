@@ -130,13 +130,15 @@ replicate_fcn <- function(location.vector) {
   }
   
   #we now delete the original unreplicated rows from the dataset
-  # numrow[1] has the first row number of the unreplicated row
+  #numrow[1] has the first row number of the unreplicated row
   del.start <- rownum[1]
   #the last row
   del.end <- rownum[rowlength]
   del.list <- seq(del.start,del.end,1)
+  #delete unreplicated rows
   conflict_data <- conflict_data[-del.list,]
   
+  #append replicated rows to end of dataset
   conflict_data <- rbind(conflict_data, conflict.expanded)
   conflict_data
 }
