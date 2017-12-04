@@ -292,6 +292,8 @@ conflict_data$location[conflict_data$location == "Brunei"] <- "Brunei Darussalam
 difference <- setdiff(conflict_data$location, WBD.SES$country)
 difference
 
+
+
 ```
 
 
