@@ -199,24 +199,42 @@ conflict_data <- replicate_fcn(difference[64])
 conflict_data <- replicate_fcn(difference[66])
 
 #rename Cambodia (Kampuchea) to "Cambodia"
-#rename Russia (Soviet Union) to "Russia"
-#rename Madagascar (Malagasy) to "Madagascar"
-#rename Yemen to Yemen
-#rename "Vietnam"
+conflict_data$location[conflict_data$location == "Cambodia (Kampuchea)"] <- "Cambodia"
+#rename "Russia (Soviet Union)" to "Russia"
+conflict_data$location[conflict_data$location == "Russia (Soviet Union)"] <- "Russia"
+#rename "Madagascar (Malagasy)" to "Madagascar"
+conflict_data$location[conflict_data$location == "Madagascar (Malagasy)"] <- "Madagascar"
+#rename North/South Yemen to Yemen
+conflict_data$location[conflict_data$location == "Yemen (North Yemen)"] <- "Yemen"
+conflict_data$location[conflict_data$location == "South Yemen"] <- "Yemen"
+#rename North/South Vietnam to "Vietnam"
+conflict_data$location[conflict_data$location == "Vietnam (North Vietnam)"] <- "Vietnam"
+conflict_data$location[conflict_data$location == "South Vietnam"] <- "Vietnam"
 #rename "United States of America" to "United States"
+conflict_data$location[conflict_data$location == "United States of America"] <- "United States"
 #rename "Myanmar (Burma)" to "Myanmar"
-#rename "DR Congo (Zaire)" to "Congo, Dem Rep"
+conflict_data$location[conflict_data$location == "Myanmar (Burma)"] <- "Myanmar"
+#rename "DR Congo (Zaire)" to "Congo, Dem. Rep."
+conflict_data$location[conflict_data$location == "DR Congo (Zaire)"] <- "Congo, Dem. Rep."
 #rename "Rumania" to "Romania"
+conflict_data$location[conflict_data$location == "Rumania"] <- "Romania"
 #rename "Zimbabwe (Rhodesia)" to "Zimbabwe"
+conflict_data$location[conflict_data$location == "Zimbabwe (Rhodesia)"] <- "Zimbabwe"
 #rename "Serbia (Yugoslavia)" to "Serbia"
+conflict_data$location[conflict_data$location == "Serbia (Yugoslavia)"] <- "Serbia"
 #rename "Bosnia-Herzegovina" to "Bosnia and Herzegovina"
+conflict_data$location[conflict_data$location == "Bosnia-Herzegovina"] <- "Bosnia and Herzegovina"
 #rename "Ivory Coast" to "Cote d'Ivoire"
+conflict_data$location[conflict_data$location == "Ivory Coast"] <- "Cote d'Ivoire"
 #rename "Brunei" to "Brunei Darussalam"
+conflict_data$location[conflict_data$location == "Brunei"] <- "Brunei Darussalam"
 
 #change the following names in WBD set:
 #"North Korea" 
 #"South Korea" 
 #"Yemen, Rep." to "Yemen"
+#"Congo, Rep." to "Congo"
+#"Congo, Dem Rep" to "Congo, Dem. Rep."
 
 #issues with "Taiwan", "Hyderabad", and "Laos"
 
