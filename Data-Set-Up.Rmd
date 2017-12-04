@@ -201,6 +201,29 @@ conflict_data <- replicate_fcn(difference[62])
 conflict_data <- replicate_fcn(difference[63])
 conflict_data <- replicate_fcn(difference[64])
 conflict_data <- replicate_fcn(difference[66])
+
+#rename Cambodia (Kampuchea) to "Cambodia"
+#rename Russia (Soviet Union) to "Russia"
+#rename Madagascar (Malagasy) to "Madagascar"
+#rename Yemen to Yemen
+#rename "Vietnam"
+#rename "United States of America" to "United States"
+#rename "Myanmar (Burma)" to "Myanmar"
+#rename "DR Congo (Zaire)" to "Congo, Dem Rep"
+#rename "Rumania" to "Romania"
+#rename "Zimbabwe (Rhodesia)" to "Zimbabwe"
+#rename "Serbia (Yugoslavia)" to "Serbia"
+#rename "Bosnia-Herzegovina" to "Bosnia and Herzegovina"
+#rename "Ivory Coast" to "Cote d'Ivoire"
+#rename "Brunei" to "Brunei Darussalam"
+
+#change the following names in WBD set:
+#"North Korea" 
+#"South Korea" 
+#"Yemen, Rep." to "Yemen"
+
+#issues with "Taiwan", "Hyderabad", and "Laos"
+
 ```
 
 
