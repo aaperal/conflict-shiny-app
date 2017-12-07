@@ -38,7 +38,7 @@ server <- function(input, output) {
   
   output$distPlot <- renderPlot({
     # generate bins based on input$bins from ui.R
-    x    <- WBD.SES.conflict[, 5] # fertility rate
+    x    <- WBD.SES.conflict[, 30] # fertility rate
     x    <- na.omit(x)
     bins <- seq(min(x), max(x), length.out = input$bins + 1)
     
