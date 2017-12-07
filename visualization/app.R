@@ -23,7 +23,8 @@ ui <- fluidPage(
                   "Number of bins:",
                   min = 1,
                   max = 50,
-                  value = 30)
+                  value = 30),
+      selectizeInput('text','Country selector', choices = country.name, multiple = TRUE)
     ),
     
     # Show a plot of the generated distribution
@@ -38,8 +39,9 @@ server <- function(input, output) {
   
   output$distPlot <- renderPlot({
     # generate bins based on input$bins from ui.R
-    x    <- WBD.SES.conflict[, 5] # fertility rate
+    x    <- WBD.SES.conflict[, 30] # fertility rate
     x    <- na.omit(x)
+    x 
     bins <- seq(min(x), max(x), length.out = input$bins + 1)
     
     # draw the histogram with the specified number of bins
