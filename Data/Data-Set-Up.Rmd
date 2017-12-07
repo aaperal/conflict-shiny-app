@@ -292,7 +292,9 @@ conflict.data$location[conflict.data$location == "Brunei"] <- "Brunei Darussalam
 difference <- setdiff(conflict.data$location, WBD.SES$country)
 difference
 
-
+# convert encoding for countries to UTF-8
+country.name <- as.character(unique(WBD.SES.conflict[,1]))
+country.name <- iconv(country.name, "", "UTF-8", "?")
 
 ```
 
