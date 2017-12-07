@@ -292,10 +292,6 @@ conflict.data$location[conflict.data$location == "Brunei"] <- "Brunei Darussalam
 difference <- setdiff(conflict.data$location, WBD.SES$country)
 difference
 
-# convert encoding for countries to UTF-8
-country.name <- as.character(unique(WBD.SES.conflict[,1]))
-country.name <- iconv(country.name, "", "UTF-8", "?")
-
 ```
 
 ```{r}
@@ -303,4 +299,21 @@ country.name <- iconv(country.name, "", "UTF-8", "?")
 WBD.SES.conflict <- merge(conflict.data, WBD.SES, by.y=c("country", "year"), by.x=c("location", "year"), all=TRUE)
 ```
 
+```{r}
+require(dplyr)
+# more wrangling
+# remove values in the "location" columns that we don't want or need
+
+setdiff(WBD.SES.conflict$location, conflict.data$location)
+
+to.remove <- c("Early-demographic dividend", "East Asia & Pacific (IDA & IBRD countries)", "East Asia & Pacific (excluding high income)", "Europe & Central Asia (excluding high income)", "Europe & Central Asia (IDA & IBRD countries)", "Fragile and conflict affected situations", "Heavily indebted poor countries (HIPC)", "High income", "IBRD only", "IDA & IBRD total", "IDA blend", "IDA only", "IDA total", "Late-demographic dividend", "Latin America & Caribbean (excluding high income)", "Latin America & the Caribbean (IDA & IBRD countries)", "Least developed countries: UN classification", "Low & middle income", "Low income", "Lower middle income", "Middle East & North Africa (excluding high income)", "Middle East & North Africa (IDA & IBRD countries)", "Middle income", "Not classified", "OECD members", "Other small states", "Pacific island small states", "Post-demographic dividend", "Pre-demographic dividend", "Small States", "South Asia (IDA & IBRD)", "Sub-Saharan Africa (excluding high income)", "Sub-Saharan Africa (IDA & IBRD countries)", "Upper middle income")
+WBD.SES.conflict <- WBD.SES.conflict[ !WBD.SES.conflict$location %in% to.remove,]
+
+
+# convert encoding for countries to UTF-8
+country.name <- as.character(unique(WBD.SES.conflict[,1]))
+country.name <- iconv(country.name, "", "UTF-8", "?")
+
+country.name
+```
 
