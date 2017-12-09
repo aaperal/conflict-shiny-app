@@ -115,7 +115,7 @@ ui <- fluidPage(
       hr(),
       fluidRow(column(3, verbatimTextOutput("value"))),
       selectInput("indicators", "Indicators:", 
-                  choices=colnames(WBD.SES.conflict[,c(29:42)])),
+                  choices=colnames(WBD.SES.conflict[,c(29:42,45)])),
       hr(),
       helpText("Indicator data from the World Bank.")
     ),
@@ -132,9 +132,7 @@ ui <- fluidPage(
 server <- function(input, output) {
   
   output$indPlot <- renderPlot({
-    # get chosen indicator x from conflict data
-    x    <- WBD.SES.conflict[, 30] # fertility rate
-    x    <- na.omit(x)
+  
     
     # get year range from slider input
     year.range <- { input$range }
@@ -156,7 +154,9 @@ server <- function(input, output) {
     
     # draw the line graph with the specified number of bins
     #plot_countries(countries, countries.data)
-    ggplot(countries.data, aes(x = countries.data$year, col=countries.data$location)) + geom_line(aes(y=countries.data[,indicator])) + labs(title = "Trends Over Time", x = "Year", y = indicator, color = "Countries")
+    if (!is.null(countries)) {
+      ggplot(countries.data, aes(x = countries.data$year, col=countries.data$location)) + geom_line(aes(y=countries.data[,indicator])) + labs(title = "Trends Over Time", x = "Year", y = indicator, color = "Countries")
+    }
   })
   
 }
