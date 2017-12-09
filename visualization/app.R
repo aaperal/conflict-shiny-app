@@ -15,13 +15,13 @@ library(RColorBrewer)
 # and a vector of indicators
 # and returns the data frame with only
 # these countries' specified indicator values
-select_countries <- function(countries, indicators) {
-  indicators <- c(indicators, "year", "location")
+select_countries <- function(countries, indicator) {
+  indicator <- c(indicator, "year", "location")
   countries.data <- data.frame()
   for (i in countries) {
     countries.data <- rbind(countries.data, 
                                 na.omit(WBD.SES.conflict[which(WBD.SES.conflict$location == i),
-                                  indicators]))
+                                  indicator]))
   }
   countries.data
 
@@ -111,16 +111,13 @@ ui <- fluidPage(
         column(4, verbatimTextOutput("range"))
       ),
       selectizeInput("countries","Country selector", choices = country.name, multiple = TRUE, selected = "Afghanistan"),
-      checkboxGroupInput("indicators", label = ("Indicators"), 
-                         choices = list("Health Expenditure" = 1, "Fertility Rate" = 2, "Life Expectancy Female" = 3, "Mortality Rate Under 5" = 4, 
-                                        "Children Employment" = 5, "Labor Force Female" = 6, "Labor Force Participation Rate" = 7, 
-                                        "Gini Index" = 7, "Refugee Origin" = 8, "Refugee Asylum" = 9, "Sanitation Access" = 10,
-                                        "Water Access" = 11, "Electricity Access" = 12, "Slums Population" = 13),
-                         selected = 1),
-      
       
       hr(),
-      fluidRow(column(3, verbatimTextOutput("value")))
+      fluidRow(column(3, verbatimTextOutput("value"))),
+      selectInput("indicators", "Indicators:", 
+                  choices=colnames(WBD.SES.conflict[,c(29:42)])),
+      hr(),
+      helpText("Indicator data from the World Bank.")
     ),
     
     
@@ -145,13 +142,13 @@ server <- function(input, output) {
     upper <- year.range[2]
     
     # get selected indicators
-    indicators <- input$indicators
-    df.ind <- to_df_string(indicators)
-    
+    #browser()
+    indicator <- input$indicators
+
     # get selected countries
     countries <- input$countries
     # get selected countries' specified indicators
-    countries.data <- select_countries(countries, df.ind)
+    countries.data <- select_countries(countries, indicator)
     
     #indicator.vector <- na.omit(WBD.SES.conflict[which(WBD.SES.conflict$location == country), c("fetility_rate", "year")])
     # only display the years in range
@@ -159,7 +156,7 @@ server <- function(input, output) {
     
     # draw the line graph with the specified number of bins
     #plot_countries(countries, countries.data)
-    ggplot(countries.data, aes(x = countries.data$year, col=countries.data$location)) + geom_line(aes(y=countries.data$health_expenditure)) + labs(title = "Trends Over Time", x = "Year", y = "Indicators", color = "Countries")
+    ggplot(countries.data, aes(x = countries.data$year, col=countries.data$location)) + geom_line(aes(y=countries.data[,indicator])) + labs(title = "Trends Over Time", x = "Year", y = indicator, color = "Countries")
   })
   
 }
