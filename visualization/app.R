@@ -9,6 +9,89 @@
 
 library(shiny)
 library(ggplot2)
+library(RColorBrewer)
+
+# this function takes a vector of countries
+# and a vector of indicators
+# and returns the data frame with only
+# these countries' specified indicator values
+select_countries <- function(countries, indicators) {
+  indicators <- c(indicators, "year", "location")
+  countries.data <- data.frame()
+  for (i in countries) {
+    countries.data <- rbind(countries.data, 
+                                na.omit(WBD.SES.conflict[which(WBD.SES.conflict$location == i),
+                                  indicators]))
+  }
+  countries.data
+
+}
+
+# this function takes an indicator integer (from checkbox)
+# and turns it into the corrseponding data frame name
+to_df_string <- function(indicator) {
+  df.ind <- NULL
+  if (indicator == 1) {
+    df.ind <- "health_expenditure"
+  } else if (indicator == 2) {
+    df.ind <- "fetility_rate"
+  } else if (indicator == 3) {
+    df.ind <- "life_expectancy_female"
+  } else if (indicator == 4) {
+    df.ind <- "mortality_rate_under5"
+  } else if (indicator == 5) {
+    df.ind <- "children_employment"
+  } else if (indicator == 6) {
+    df.ind <- "labor_force_female"
+  } else if (indicator == 7) {
+    df.ind <- "labor_force_Participation_rate"
+  } else if (indicator == 8) {
+    df.ind <- "gini_index"
+  } else if (indicator == 9) {
+    df.ind <- "refugee_origin"
+  } else if (indicator == 10) {
+    df.ind <- "refugee_asylum"
+  } else if (indicator == 11) {
+    df.ind <- "sanitation_access"
+  } else if (indicator == 12) {
+    df.ind <- "water_access"
+  } else if (indicator == 13) {
+    df.ind <- "electricity_access"
+  } else if (indicator == 14) {
+    df.ind <- "slums_population"
+  }
+  df.ind
+}
+
+# helper function that returns the necessary
+# geom_line strings
+geom_string <- function(countries, countries.data) {
+  browser()
+  string <- list()
+  country.data <- data.frame()
+  for (i in countries) {
+   country.data <- countries.data[which(countries.data$location == i),]
+   string <- c(string, list(geom_line(aes(y=countries.data[which(countries.data$location == i),]$health_expenditure))))
+  }
+  string
+}
+
+plot_countries <- function(countries, countries.data) {
+  num.countries <- length(countries)
+  color.palette <- brewer.pal(num.countries, "Set3")
+  # need to extract indicator vector for each country
+  # for (i in countries) {
+  #   indicator.vector <- na.omit(WBD.SES.conflict[
+  #     which(WBD.SES.conflict$location == country),
+  #     c("fetility_rate", "year")]) 
+  # }
+  #browser()
+  geoms <- geom_string(countries, countries.data)
+  graph <- ggplot(countries.data, aes(countries.data$year)) + geoms + xlab("Year") + ylab("Health Expenditure")
+  graph
+}
+
+
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
@@ -27,8 +110,8 @@ ui <- fluidPage(
       fluidRow(
         column(4, verbatimTextOutput("range"))
       ),
-      selectizeInput('text','Country selector', choices = country.name, multiple = TRUE, selected = "Afghanistan"),
-      checkboxGroupInput("checkGroup", label = ("Indicators"), 
+      selectizeInput("countries","Country selector", choices = country.name, multiple = TRUE, selected = "Afghanistan"),
+      checkboxGroupInput("indicators", label = ("Indicators"), 
                          choices = list("Health Expenditure" = 1, "Fertility Rate" = 2, "Life Expectancy Female" = 3, "Mortality Rate Under 5" = 4, 
                                         "Children Employment" = 5, "Labor Force Female" = 6, "Labor Force Participation Rate" = 7, 
                                         "Gini Index" = 7, "Refugee Origin" = 8, "Refugee Asylum" = 9, "Sanitation Access" = 10,
@@ -41,9 +124,9 @@ ui <- fluidPage(
     ),
     
     
-    # Show a plot of the generated distribution
+    # Show a plot of the indicators
     mainPanel(
-      plotOutput("distPlot")
+      plotOutput("indPlot")
     )
   )
 )
@@ -51,29 +134,34 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   
-  output$distPlot <- renderPlot({
-    # generate bins based on input$bins from ui.R
+  output$indPlot <- renderPlot({
+    # get chosen indicator x from conflict data
     x    <- WBD.SES.conflict[, 30] # fertility rate
     x    <- na.omit(x)
+    
+    # get year range from slider input
     year.range <- { input$range }
     lower <- year.range[1]
     upper <- year.range[2]
-   
-    country <- input$text
-    indicator.vector <- na.omit(WBD.SES.conflict[which(WBD.SES.conflict$location == country), c("fetility_rate", "year")])
+    
+    # get selected indicators
+    indicators <- input$indicators
+    df.ind <- to_df_string(indicators)
+    
+    # get selected countries
+    countries <- input$countries
+    # get selected countries' specified indicators
+    countries.data <- select_countries(countries, df.ind)
+    
+    #indicator.vector <- na.omit(WBD.SES.conflict[which(WBD.SES.conflict$location == country), c("fetility_rate", "year")])
     # only display the years in range
-    indicator.vector <- indicator.vector[which(indicator.vector$year >= lower & indicator.vector$year <= upper),]
+    countries.data <- countries.data[which(countries.data$year >= lower & countries.data$year <= upper),]
     
     # draw the line graph with the specified number of bins
-    ggplot(indicator.vector, aes(x = indicator.vector$year)) + geom_line(aes(y=indicator.vector$fetility_rate)) + xlab("Year") + ylab("fertility rate")
-    #hist(x, main = paste("Histogram of fertility rates"), xlab = "Fertiliy Rate", breaks = bins, col = 'darkgray', border = 'white')
+    #plot_countries(countries, countries.data)
+    ggplot(countries.data, aes(x = countries.data$year, col=countries.data$location)) + geom_line(aes(y=countries.data$health_expenditure)) + labs(title = "Trends Over Time", x = "Year", y = "Indicators", color = "Countries")
   })
   
-  # output$linePlot <- renderPlot({
-  #   ctry <- input$text
-  #   y    <- WBD.SES.conflict$ctry
-  #   y
-  # })
 }
 
 # Run the application 
