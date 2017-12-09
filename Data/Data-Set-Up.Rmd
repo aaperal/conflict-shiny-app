@@ -161,9 +161,8 @@ replicate_fcn <- function(location.vector) {
     conflict.expanded <- rbind(conflict.expanded, 
                                conflict.data[rep(rownum[i],each=len_split),])
   }
+  #sort by year
   conflict.expanded <- conflict.expanded[order(conflict.expanded$year),]  
-  
-  
   
   for(j in seq(1,nrow(conflict.expanded),1)){
     mod_val <- j %% len_split
