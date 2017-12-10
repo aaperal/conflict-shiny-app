@@ -5,7 +5,9 @@ date: "12/12/2017"
 output:
   html_document: default
   pdf_document: default
+bibliography: citations.bib
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, cache=TRUE, 
@@ -20,7 +22,7 @@ require(WDI)
 
 ## Introduction
 
-Since the end of the cold war in 1991, 2016 was the fifth most violent year in the world. Currently in 2017, there are more than 40 active conflicts in the world right now. Armed conflicts severely affect the lives of indivudals in those countries currentl. Most of the data online, outlines the armed conflict and causlaities of the war. Others also include an [interactive feature](https://www.irinnews.org/maps-and-graphics/2017/04/04/updated-mapped-world-war) of the global conflict to observe the scale of the conflict, with respect to other nations. One [special interactive map](https://www.cfr.org/interactives/global-conflict-tracker#!/) illustrates how various armed conflict affect US interests. Despite all the information surrounding the conflict, none acturelty depict how the conflict has affected the lives of the individuals alive and living amidst the war.
+Since the end of the cold war in 1991, 2016 was the fifth most violent year in the world [@trends]. Currently in 2017, there are more than 40 active conflicts in the world right now. Armed conflicts severely affect the lives of indivudals in those countries currentl. Most of the data online, outlines the armed conflict and causlaities of the war. Others also include an [interactive feature](https://www.irinnews.org/maps-and-graphics/2017/04/04/updated-mapped-world-war) of the global conflict to observe the scale of the conflict, with respect to other nations. One [special interactive map](https://www.cfr.org/interactives/global-conflict-tracker#!/) illustrates how various armed conflict affect US interests. Despite all the information surrounding the conflict, none acturelty depict how the conflict has affected the lives of the individuals alive and living amidst the war.
 
 War impacts people profoundly, and yet countries like the US insist on engaging in numerous armed conflicts regardless of the outcome. Westernized people, on  account of the privelge awarded by not being engaged in the conflcit on a daily basis, rarely undertand the impact of war on the population. How has the war impacted education? Are more males leaving school as a result of the conflict? What about women? How has the war impacted the need to have equal education for women? How has the conflict caused the governmental expenditures to changes? Is there more funding for the various industries or are a mojortiy of the funding being exploited to arm the conflict? In addition, do the citizens have access to water, electircity, and housing and basic human rights? 
 
@@ -30,7 +32,7 @@ Our application, seen above, offers a tool to answer the questions as well as a 
 
 ## Data
 
-The first data set used is from [Kaggle](https://www.kaggle.com/sdorius/globses/data) titled "Country Socioeconomic Status Scores." This data set includes the overall score of socioeconomic sattus by country for every decade since 1880. Socioeconomic Status (SES) Scores measure the accesibility of an individual, household, or community to collective resources. This measure incoprorates, income, wealth, health, and occupation. For each country, this indivudialzied measure is aggregated as a whole to provide the measure for the country.
+The first data set used is from [Kaggle](https://www.kaggle.com/sdorius/globses/data) titled "Country Socioeconomic Status Scores." This data set includes the overall score of socioeconomic sattus by country for every decade since 1880. Socioeconomic Status (SES) Scores measure the accesibility of an individual, household, or community to collective resources. This measure incoprorates, income, wealth, health, and occupation [@Psaki2014]. For each country, this indivudialzied measure is aggregated as a whole to provide the measure for the country.
 
 ```{r, echo=FALSE}
 library(readr)
@@ -38,9 +40,23 @@ SES.data <- read_csv("GLOB.SES.csv")
 SES.data %>% arrange(country, desc(year)) %>% head(5)
 ```
 
-The second set is world data from the World Bank. The data was accessed from an r package `WDI`. Using the r package we choose 17 indicators which we believed were good measures of the well-being of the individuals in the country. 
+The second set is world data from the World Bank. The data was accessed from an r package `WDI`. Using the r package we choose 17 indicators which we believed were good measures of the well-being of the individuals in the country. The indicators were as follows:
 
-### Variable Selection
+* health expenditure, total (% of GDP)
+* fertility rate, tota (births per total)
+* life expectancy at birth, female (years)
+* life expectancy at birth, total (years)
+* mortality rate, under-5 (per 1000 live births)
+* children in employment, total (% of children 7-14)
+* labor force, female (% of total labor force)
+* labor force participation rate, female (% of female population ages 15+)(modeled ILO estimate) indicator
+* GINI index (World Bank estimate) indicator
+* Refugee population by country or territory of origin ()
+* Refugee population by country or territory of asylum ()
+* Improved sanitation facilities (% of population with access) indicator
+* Improved water source (% of population with access) indicator
+* Access to electricity (% of population) indicator
+* Population living in slums (% of urban population) indicator
 
 ### Wrangling
 
@@ -49,3 +65,5 @@ The second set is world data from the World Bank. The data was accessed from an 
 ### Limitations
 
 ## Conclusion
+
+# References
