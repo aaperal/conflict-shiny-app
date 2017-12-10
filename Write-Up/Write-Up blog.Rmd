@@ -58,6 +58,13 @@ The second set is world data from the World Bank. The data was accessed from an 
 * Access to electricity (% of population) indicator
 * Population living in slums (% of urban population) indicator
 
+The third and final set is data about armed conflicts from the Uppsala Conflict Data Program  (UCDP) at the department of Peace and Conflict Research, Uppsala University and the Centre for the Study of Civil War at the Peace Research Institute Oslo (PRIO). The  UCDP/PRIO Armed Conflict Dataset represents both internal and external conflict from 1946 to the present. It documents the two sides in the conflict, as well as the location of the conflict, and indicators of intensity and number of fatalities. Armed conflict is defined as [-@ConflictSet]:
+
+> “A contested incompatibility that concerns government and/or
+territory where the use of armed force between two parties, of which at least one is the
+government of a state, results in at least 25 battle-related deaths in a calendar year" -- Gleditsch et al. (2002)
+
+
 ### Wrangling
 
 ## Results
