@@ -2,16 +2,20 @@
 title: "Changes in Demographic after Armed Conflict"
 author: "Alan Peral and Kadija Yilla"
 date: "12/12/2017"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, cache=TRUE)
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, cache=TRUE, 
+                      fig.width=7, fig.height=6, fig.align = "center")
+options(digits=3)
 ```
 
 ## Introduction
 
-Since the end of the cold war in 1991, 2016 was the fifth most violent year in the world. Currently in 2017, there are more than 40 active conflicts in the world right now. Armed conflicts severely affect the lives of indivudals in those countries currentl. Most of the data online, outlines the armed conflict and causlaities of the war. Others also include an interactive feature of the global conflict to observe the scale of the conflict, with respect to other nations. Despite all the information surrounding the conflict, none acturelty depict how the conflict has affected the lives of the individuals alive and living amidst the war.
+Since the end of the cold war in 1991, 2016 was the fifth most violent year in the world. Currently in 2017, there are more than 40 active conflicts in the world right now. Armed conflicts severely affect the lives of indivudals in those countries currentl. Most of the data online, outlines the armed conflict and causlaities of the war. Others also include an [interactive feature](https://www.irinnews.org/maps-and-graphics/2017/04/04/updated-mapped-world-war) of the global conflict to observe the scale of the conflict, with respect to other nations. One [special interactive map](https://www.cfr.org/interactives/global-conflict-tracker#!/) illustrates how various armed conflict affect US interests. Despite all the information surrounding the conflict, none acturelty depict how the conflict has affected the lives of the individuals alive and living amidst the war.
 
 War impacts people profoundly, and yet countries like the US insist on engaging in numerous armed conflicts regardless of the outcome. Westernized people, on  account of the privelge awarded by not being engaged in the conflcit on a daily basis, rarely undertand the impact of war on the population. How has the war impacted education? Are more males leaving school as a result of the conflict? What about women? How has the war impacted the need to have equal education for women? How has the conflict caused the governmental expenditures to changes? Is there more funding for the various industries or are a mojortiy of the funding being exploited to arm the conflict? In addition, do the citizens have access to water, electircity, and housing and basic human rights? 
 
@@ -20,6 +24,8 @@ War impacts people profoundly, and yet countries like the US insist on engaging 
 Our application, seen above, offers a tool to answer the questions as well as a variety of other questions. We intergrated the wealth of infomration available for armed conflict and various findings on coutry-level data to provide a syntehsized view of how armed conflcist affects various nations. By offering this perpective, we can observe that it severely affects countries in which the conflcit takes place and the other side is left unaffected and growing.
 
 ## Data
+
+The first data set used is from [Kaggle](https://www.kaggle.com/sdorius/globses/data) titled "Country Socioeconomic Status Scores." This data set includes the overall score of socioeconomic sattus by country for every decade since 1880. Socioeconomic Status (SES) Scores measure the accesibility of an individual, household, or community to collective resources. This measure incoprorates, income, wealth, health, and occupation. For each country, this indivudialzied measure is aggregated as a whole to provide the measure for the country.
 
 ### Variable Selection
 
