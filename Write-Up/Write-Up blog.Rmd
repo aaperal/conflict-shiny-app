@@ -13,6 +13,11 @@ knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, cache=TRUE,
 options(digits=3)
 ```
 
+```{r include=FALSE}
+require(dplyr)
+require(WDI)
+```
+
 ## Introduction
 
 Since the end of the cold war in 1991, 2016 was the fifth most violent year in the world. Currently in 2017, there are more than 40 active conflicts in the world right now. Armed conflicts severely affect the lives of indivudals in those countries currentl. Most of the data online, outlines the armed conflict and causlaities of the war. Others also include an [interactive feature](https://www.irinnews.org/maps-and-graphics/2017/04/04/updated-mapped-world-war) of the global conflict to observe the scale of the conflict, with respect to other nations. One [special interactive map](https://www.cfr.org/interactives/global-conflict-tracker#!/) illustrates how various armed conflict affect US interests. Despite all the information surrounding the conflict, none acturelty depict how the conflict has affected the lives of the individuals alive and living amidst the war.
@@ -27,6 +32,14 @@ Our application, seen above, offers a tool to answer the questions as well as a 
 
 The first data set used is from [Kaggle](https://www.kaggle.com/sdorius/globses/data) titled "Country Socioeconomic Status Scores." This data set includes the overall score of socioeconomic sattus by country for every decade since 1880. Socioeconomic Status (SES) Scores measure the accesibility of an individual, household, or community to collective resources. This measure incoprorates, income, wealth, health, and occupation. For each country, this indivudialzied measure is aggregated as a whole to provide the measure for the country.
 
+```{r, echo=FALSE}
+library(readr)
+SES.data <- read_csv("GLOB.SES.csv")
+SES.data %>% arrange(country, desc(year)) %>% head(5)
+```
+
+The second set is world data from the World Bank. The data was accessed from an r package `WDI`. Using the r package we choose 17 indicators which we believed were good measures of the well-being of the individuals in the country. 
+
 ### Variable Selection
 
 ### Wrangling
@@ -36,9 +49,3 @@ The first data set used is from [Kaggle](https://www.kaggle.com/sdorius/globses/
 ### Limitations
 
 ## Conclusion
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
