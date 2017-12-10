@@ -1,27 +1,35 @@
 ---
-title: "Write-Up"
-author: "Alan, Kadija"
-date: "12/9/2017"
+title: "Changes in Demographic after Armed Conflict"
+author: "Alan Peral and Kadija Yilla"
+date: "12/12/2017"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, cache=TRUE)
 ```
 
-## R Markdown
+## Introduction
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Since the end of the cold war in 1991, 2016 was the fifth most violent year in the world. Currently in 2017, there are more than 40 active conflicts in the world right now. Armed conflicts severely affect the lives of indivudals in those countries currentl. Most of the data online, outlines the armed conflict and causlaities of the war. Others also include an interactive feature of the global conflict to observe the scale of the conflict, with respect to other nations. Despite all the information surrounding the conflict, none acturelty depict how the conflict has affected the lives of the individuals alive and living amidst the war.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+War impacts people profoundly, and yet countries like the US insist on engaging in numerous armed conflicts regardless of the outcome. Westernized people, on  account of the privelge awarded by not being engaged in the conflcit on a daily basis, rarely undertand the impact of war on the population. How has the war impacted education? Are more males leaving school as a result of the conflict? What about women? How has the war impacted the need to have equal education for women? How has the conflict caused the governmental expenditures to changes? Is there more funding for the various industries or are a mojortiy of the funding being exploited to arm the conflict? In addition, do the citizens have access to water, electircity, and housing and basic human rights? 
 
-```{r cars}
-summary(cars)
-```
+[//]: # "insert picture of the shiny app that addresses one of these questions"
 
-## Including Plots
+Our application, seen above, offers a tool to answer the questions as well as a variety of other questions. We intergrated the wealth of infomration available for armed conflict and various findings on coutry-level data to provide a syntehsized view of how armed conflcist affects various nations. By offering this perpective, we can observe that it severely affects countries in which the conflcit takes place and the other side is left unaffected and growing.
 
-You can also embed plots, for example:
+## Data
+
+### Variable Selection
+
+### Wrangling
+
+## Results
+
+### Limitations
+
+## Conclusion
 
 ```{r pressure, echo=FALSE}
 plot(pressure)
