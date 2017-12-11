@@ -314,5 +314,24 @@ country.name <- as.character(unique(WBD.SES.conflict[,1]))
 country.name <- iconv(country.name, "", "UTF-8", "?")
 
 country.name
+
+# library(mapdata)
+# library(maps)
+# library(ggplot2)
+# world <- map_data("world2Hires")
+# ggplot(data = world, aes(x=long, y=lat, group = group)) + geom_path()
+library(rworldmap)
+library(dplyr)
+# wrangling to make data plottable on map
+map.data <- WBD.SES.conflict[,c("location","year","conflictid","iso2c")]
+map.data <- map.data[which(!is.na(map.data$conflictid)),]
+map.data
+count <- map.data %>%
+  group_by(location) %>%
+  summarize(count=n())
+map.data <- merge(map.data, count, by = "location", all=TRUE)
+mapped_data <- joinCountryData2Map(map.data, joinCode = "ISO2", nameJoinColumn = "iso2c",nameCountryColumn = "location")
+mapCountryData(mapped_data, nameColumnToPlot = "count")
 ```
+
 
