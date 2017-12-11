@@ -324,14 +324,27 @@ library(rworldmap)
 library(dplyr)
 # wrangling to make data plottable on map
 map.data <- WBD.SES.conflict[,c("location","year","conflictid","iso2c")]
-map.data <- map.data[which(!is.na(map.data$conflictid)),]
-map.data
-count <- map.data %>%
+map.data2 <- map.data[which(!is.na(map.data$conflictid)),]
+map.count.data <- map.data2 %>%
   group_by(location) %>%
   summarize(count=n())
-map.data <- merge(map.data, count, by = "location", all=TRUE)
-mapped_data <- joinCountryData2Map(map.data, joinCode = "ISO2", nameJoinColumn = "iso2c",nameCountryColumn = "location")
-mapCountryData(mapped_data, nameColumnToPlot = "count")
+map.data <- data.frame(unique(map.data[,c("location")]))
+colnames(map.data) <- c("location")
+map.count.data <- merge(map.data, map.count.data, by = "location", all=TRUE)
+map.count.data[is.na(map.count.data)] <- 0
+map.count.data[,1] <- iconv(map.count.data[,1], "", "UTF-8", "?")
+
+
+#na.omit(count)
+# count <- merge(count, map.data, by = "location", all=TRUE)
+# map.data %>%
+#   group_by(location) %>%
+#   summarize()
+# mapped_data <- joinCountryData2Map(map.data, joinCode = "ISO2", nameJoinColumn = "iso2c",nameCountryColumn = "location")
+# mapCountryData(mapped_data, nameColumnToPlot = "count")
+
+
+
 ```
 
 

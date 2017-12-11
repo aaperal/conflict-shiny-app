@@ -10,7 +10,7 @@
 library(shiny)
 library(ggplot2)
 library(RColorBrewer)
-library(googleVis)
+library(plotly)
 
 # this function takes a vector of countries
 # and a vector of indicators
@@ -124,7 +124,8 @@ ui <- fluidPage(
                     choices=colnames(WBD.SES.conflict[,c(29:42,45)])),
         hr(),
         helpText("Indicator data from the World Bank.")
-      )
+      ) 
+      
     ),
     
     
@@ -133,6 +134,10 @@ ui <- fluidPage(
       conditionalPanel(
         condition = "input.plot == 'World Bank Indicators'",
         plotOutput("indPlot")
+      ),
+      conditionalPanel(
+        condition = "input.plot == 'Conflict concentration'",
+        plotlyOutput("conflictMap")
       )
     )
   )
@@ -166,9 +171,30 @@ server <- function(input, output) {
     
   })
   
-  output$conflictFreq <- renderPlot({
+  output$conflictMap <- renderPlotly({
+    # light grey boundaries
+    l <- list(color = toRGB("grey"), width = 0.5)
+    
+    # specify map projection/options
+    g <- list(
+      showframe = FALSE,
+      showcoastlines = FALSE,
+      projection = list(type = 'Mercator')
+    )
+    
+    plot_geo(map.count.data) %>%
+      add_trace(
+        z = ~count, color = ~count, colors = 'Blues', locationmode = 'country names',
+        text = ~location, locations = ~location, marker = list(line = l)
+      ) %>%
+      colorbar(title = 'Number of Conflicts', tickprefix = '') %>%
+      layout(
+        title = 'Number of Conflicts Contested in Country<br>Conflicts from 1946-2016',
+        geo = g
+      )
+    
     # get conflict locations and ids
-    conflicts.loc.id <- WBD.SES.conflict[which(unique(WBD.SES.conflict$conflictid)), "location"]
+    #conflicts.loc.id <- WBD.SES.conflict[which(unique(WBD.SES.conflict$conflictid)), "location"]
     
   })
   
