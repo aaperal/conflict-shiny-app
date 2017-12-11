@@ -21,7 +21,7 @@ require(WDI)
 require(plyr)
 ```
 
-## Introduction
+# Introduction
 
 Since the end of the cold war in 1991, 2016 was the fifth most violent year in the world [@trends]. Currently in 2017, there are more than 40 active conflicts in the world right now. Armed conflicts severely affect the lives of indivudals in those countries currentl. Most of the data online, outlines the armed conflict and causlaities of the war. Others also include an [interactive feature](https://www.irinnews.org/maps-and-graphics/2017/04/04/updated-mapped-world-war) of the global conflict to observe the scale of the conflict, with respect to other nations. One [special interactive map](https://www.cfr.org/interactives/global-conflict-tracker#!/) illustrates how various armed conflict affect US interests. Despite all the information surrounding the conflict, none acturelty depict how the conflict has affected the lives of the individuals alive and living amidst the war.
 
@@ -31,14 +31,14 @@ War impacts people profoundly, and yet countries like the US insist on engaging 
 
 Our application, seen above, offers a tool to answer the questions as well as a variety of other questions. We intergrated the wealth of infomration available for armed conflict and various findings on coutry-level data to provide a syntehsized view of how armed conflcist affects various nations. By offering this perpective, we can observe that it severely affects countries in which the conflcit takes place and the other side is left unaffected and growing.
 
-## Data
+# Data
 
 The first data set used is from [Kaggle](https://www.kaggle.com/sdorius/globses/data) titled "Country Socioeconomic Status Scores." This data set includes the overall score of socioeconomic sattus by country for every decade since 1880. Socioeconomic Status (SES) Scores measure the accesibility of an individual, household, or community to collective resources. This measure incoprorates, income, wealth, health, and occupation [@Psaki2014]. For each country, this indivudialzied measure is aggregated as a whole to provide the measure for the country.
 
 ```{r, echo=FALSE}
 library(readr)
 SES.data <- read_csv("GLOB.SES.csv")
-SES.data %>% arrange(country, desc(year)) %>% head(5)
+SES.data %>% arrange(country, desc(year)) %>% select(c(2:6,8)) %>% head(5)
 ```
 
 The second set is world data from the World Bank. The data was accessed from an r package `WDI`. Using the r package we choose 17 indicators which we believed were good measures of the well-being of the individuals in the country. The indicators were as follows:
@@ -116,7 +116,7 @@ rnm = c("SH.XPD.TOTL.ZS" = "health_expenditure",
         )
 
 WBD.data2 <- rename(WBD.data, rnm)
-WBD.data2 %>% select(1:5) %>% head(5)
+WBD.data2 %>% select(2,3,5,6) %>% head(5)
 ```
 
 
@@ -129,18 +129,271 @@ government of a state, results in at least 25 battle-related deaths in a calenda
 ```{r, echo=FALSE}
 library(readr)
 conflict.data <- read_csv("ucdp-prio-acd-171.csv")
-conflict.data %>% select(1:4) %>% head(5)
+conflict.data %>% select(c(2,3,5,10)) %>% head(5)
 ```
 
 
 ### Wrangling
 
-Using the three seperate sets, we were able to construct a comprehsnive data set of all necessary information using data wrangling techniques.
+Using the three seperate sets, we were able to construct a comprehsnive data set of all necessary information using data wrangling techniques.First we merged the SES scores set, **SES.data**, with the WBD data, **WBD.data2** by merging based on the country first and then the year. Before the merge was successful, the country names had to be reconciled because of subtle differences in naming techniques. For example, "Korea, Dem. People’s Rep." in the WBD set had to be renamed to "North Korea" as that was the name in te SES set. We choose to rename the countries based on names we thought the general public would be more familiar with. 
 
-## Results
+```{r, echo=FALSE}
+# we need to rename a couple of countries in both the SES dataset
+# and the WB dataset. We normalize country names so that we can 
+# merge the two datasets.
+
+# renames in SES
+# rename Lao to Laos 
+SES.data$country[SES.data$country == "Lao"] <- "Laos"
+# rename Congo, Dem Rep to Congo, Dem. Rep.
+SES.data$country[SES.data$country == "Congo, Dem Rep"] <- "Congo, Dem. Rep."
+# Trinidad & Tobago to Trinidad and Tobago
+SES.data$country[SES.data$country == "Trinidad & Tobago"] <- "Trinidad and Tobago"
+
+# renames in WBD
+
+# rename Congo, Rep. to Congo
+WBD.data2$country[WBD.data2$country == "Congo, Rep."] <- "Congo"
+# rename Egypt, Arab Rep. to Egypt
+WBD.data2$country[WBD.data2$country == "Egypt, Arab Rep."] <- "Egypt"
+# rename Gambia, The to Gambia
+WBD.data2$country[WBD.data2$country == "Gambia, The"] <- "Gambia"
+# rename Hong Kong SAR, China to Hong Kong
+WBD.data2$country[WBD.data2$country == "Hong Kong SAR, China"] <- "Hong Kong"
+# rename Iran, Islamic Rep. to Iran
+WBD.data2$country[WBD.data2$country == "Iran, Islamic Rep."] <- "Iran"
+# rename Kyrgyz Republic to Kyrgyzstan
+WBD.data2$country[WBD.data2$country == "Kyrgyz Republic"] <- "Kyrgyzstan"
+# rename Korea, Rep. to South Korea
+WBD.data2$country[WBD.data2$country == "Korea, Rep."] <- "South Korea"
+# rename Lao PDR to Laos
+WBD.data2$country[WBD.data2$country == "Lao PDR"] <- "Laos"
+# rename Macao SAR, China to Macao
+WBD.data2$country[WBD.data2$country == "Macao SAR, China"] <- "Macao"
+# rename Russian Federation to Russia
+WBD.data2$country[WBD.data2$country == "Russian Federation"] <- "Russia"
+# rename Slovak Republic to Slovakia
+WBD.data2$country[WBD.data2$country == "Slovak Republic"] <- "Slovakia"
+# rename Syrian Arab Republic to Syria
+WBD.data2$country[WBD.data2$country == "Syrian Arab Republic"] <- "Syria"
+# rename Venezuela, RB to Venezuela
+WBD.data2$country[WBD.data2$country == "Venezuela, RB"] <- "Venezuela"
+# rename Yemen, Rep. to Yemen
+WBD.data2$country[WBD.data2$country == "Yemen, Rep."] <- "Yemen"
+# rename Korea, Dem. People's Rep to North Korea
+WBD.data2$country[WBD.data2$country == "Korea, Dem. People’s Rep."] <- "North Korea"
+# rename Korea, Rep. to South Korea
+WBD.data2$country[WBD.data2$country == "Korea, Rep."] <- "South Korea"
+
+#merging to the SES data set and the WBD data set
+WBD.SES <- merge(WBD.data2, SES.data, by=c("country", "year"), all=TRUE)
+WBD.SES %>% select(c(1,18:20)) %>% head(5)
+```
+Next we take the established **WBD.SES** set and merge with the **conflict.data** set based on the "country"/"location." In order to create a tidy data set upon merge, we had to clean-up the conflict set for the "location" variable. For some conflicts in which the conflict occured in different locations globally, we had to seperate the countries in the "location" field and recreate the data for the seperately valued contries. To achieve this we had to create a user-fucnction that replicated the speicified joined countries and duplicated the values in one step. For example, the India vs. Pakistan War of 1965 occured in both India and Pakistan but was represented as "India, Pakistan". 
+
+```{r, echo=FALSE}
+conflict.data %>% filter(location == "India, Pakistan") %>% select(c(2,3,5,10)) %>% head(5)
+```
+This was instead changed to:
+```{r, echo=FALSE}
+#function to duplicate multiple countries with the same values 
+replicate_fcn_example <- function(location.vector) {
+  conflict.expanded <- data.frame()
+  split <- unlist(strsplit(location.vector, ", "))
+  len_split <- length(split)   
+  
+  #find the row which has the stringed values 
+  rownum <- unlist(which(conflict.data$location == location.vector))
+  rowlength <- length(rownum)
+  
+  #replicate the specific row based on the row number 
+  for(i in 1:rowlength){
+    conflict.expanded <- rbind(conflict.expanded, 
+                               conflict.data[rep(rownum[i],each=len_split),])
+  }
+  #sort by year
+  conflict.expanded <- conflict.expanded[order(conflict.expanded$year),]  
+  
+  for(j in seq(1,nrow(conflict.expanded),1)){
+    mod_val <- j %% len_split
+    if ((mod_val) == 0) {
+        mod_val <- len_split
+      }
+    conflict.expanded$location[j] <- split[mod_val]
+  }
+  conflict.expanded
+}
+```
+```{r, echo=FALSE}
+# at this point conflict.expanded will be a data frame
+# with one set of expanded rows
+# we want to now add this set of expanded rows to
+# conflict.data and repeat the process for all the rows
+# that need duplication
+#WBD.data2 <- rename(WBD.data, rnm)
+conflict.data <- read_csv("ucdp-prio-acd-171.csv")
+WBD.SES <- merge(WBD.data2, SES.data, by=c("country", "year"), all=TRUE)
+
+difference <- setdiff(conflict.data$location, WBD.SES$country)
+
+#replicate the value as an example
+conflict.expanded <- replicate_fcn_example(difference[6])
+conflict.expanded %>% select(c(2,3,5,10)) %>% head(5)
+```
+In addition, we had to conduct a few name changes to reconcile the differences in set to have a bigger join. The final set which we will be working with is displayed below. The set excludes the regions created in the WBD set for summary purposed such as "Small States" and "Low Middle Income" countries. This set is comprehensive as it includes the SES work for the decade, other country-specific indicators, and information about the conflict for a specific year. 
+
+```{r, echo=FALSE}
+#function to duplicate multiple countries with the same values 
+replicate_fcn <- function(location.vector) {
+  conflict.expanded <- data.frame()
+  split <- unlist(strsplit(location.vector, ", "))
+  len_split <- length(split)   
+  
+  #find the row which has the stringed values 
+  rownum <- unlist(which(conflict.data$location == location.vector))
+  rowlength <- length(rownum)
+  
+  #replicate the specific row based on the row number 
+  for(i in 1:rowlength){
+    conflict.expanded <- rbind(conflict.expanded, 
+                               conflict.data[rep(rownum[i],each=len_split),])
+  }
+  #sort by year
+  conflict.expanded <- conflict.expanded[order(conflict.expanded$year),]  
+  
+  for(j in seq(1,nrow(conflict.expanded),1)){
+    mod_val <- j %% len_split
+    if ((mod_val) == 0) {
+        mod_val <- len_split
+      }
+    conflict.expanded$location[j] <- split[mod_val]
+  }
+  
+  #we now delete the original unreplicated rows from the dataset
+  #numrow[1] has the first row number of the unreplicated row
+  del.start <- rownum[1]
+  #the last row
+  del.end <- rownum[rowlength]
+  del.list <- seq(del.start,del.end,1)
+  #delete unreplicated rows
+  conflict.data <- conflict.data[-del.list,]
+  
+  #append replicated rows to end of dataset
+  conflict.data <- rbind(conflict.data, conflict.expanded)
+  conflict.data
+}
+
+# at this point conflict.expanded will be a data frame
+# with one set of expanded rows
+# we want to now add this set of expanded rows to
+# conflict.data and repeat the process for all the rows
+# that need duplication
+
+difference <- setdiff(conflict.data$location, WBD.SES$country)
+
+#replicate all necessary values
+conflict.data <- replicate_fcn(difference[3])
+conflict.data <- replicate_fcn(difference[4])
+conflict.data <- replicate_fcn(difference[6])
+conflict.data <- replicate_fcn(difference[9])
+conflict.data <- replicate_fcn(difference[10])
+conflict.data <- replicate_fcn(difference[12])
+conflict.data <- replicate_fcn(difference[13])
+conflict.data <- replicate_fcn(difference[15])
+conflict.data <- replicate_fcn(difference[17])
+conflict.data <- replicate_fcn(difference[18])
+conflict.data <- replicate_fcn(difference[19])
+conflict.data <- replicate_fcn(difference[20])
+conflict.data <- replicate_fcn(difference[22])
+conflict.data <- replicate_fcn(difference[23])
+conflict.data <- replicate_fcn(difference[25])
+conflict.data <- replicate_fcn(difference[26])
+conflict.data <- replicate_fcn(difference[27])
+conflict.data <- replicate_fcn(difference[28])
+conflict.data <- replicate_fcn(difference[30])
+conflict.data <- replicate_fcn(difference[31])
+conflict.data <- replicate_fcn(difference[32])
+conflict.data <- replicate_fcn(difference[33])
+conflict.data <- replicate_fcn(difference[34])
+conflict.data <- replicate_fcn(difference[35])
+conflict.data <- replicate_fcn(difference[36])
+conflict.data <- replicate_fcn(difference[38])
+conflict.data <- replicate_fcn(difference[39])
+conflict.data <- replicate_fcn(difference[40])
+conflict.data <- replicate_fcn(difference[41])
+conflict.data <- replicate_fcn(difference[42])
+conflict.data <- replicate_fcn(difference[43])
+conflict.data <- replicate_fcn(difference[44])
+conflict.data <- replicate_fcn(difference[45])
+conflict.data <- replicate_fcn(difference[46])
+conflict.data <- replicate_fcn(difference[47])
+conflict.data <- replicate_fcn(difference[48])
+conflict.data <- replicate_fcn(difference[49])
+conflict.data <- replicate_fcn(difference[51])
+conflict.data <- replicate_fcn(difference[54])
+conflict.data <- replicate_fcn(difference[55])
+conflict.data <- replicate_fcn(difference[56])
+conflict.data <- replicate_fcn(difference[58])
+conflict.data <- replicate_fcn(difference[59])
+conflict.data <- replicate_fcn(difference[60])
+conflict.data <- replicate_fcn(difference[61])
+conflict.data <- replicate_fcn(difference[62])
+conflict.data <- replicate_fcn(difference[63])
+conflict.data <- replicate_fcn(difference[65])
+
+#rename Cambodia (Kampuchea) to "Cambodia"
+conflict.data$location[conflict.data$location == "Cambodia (Kampuchea)"] <- "Cambodia"
+#rename "Russia (Soviet Union)" to "Russia"
+conflict.data$location[conflict.data$location == "Russia (Soviet Union)"] <- "Russia"
+#rename "Madagascar (Malagasy)" to "Madagascar"
+conflict.data$location[conflict.data$location == "Madagascar (Malagasy)"] <- "Madagascar"
+#rename North/South Yemen to Yemen
+conflict.data$location[conflict.data$location == "Yemen (North Yemen)"] <- "Yemen"
+conflict.data$location[conflict.data$location == "South Yemen"] <- "Yemen"
+#rename North/South Vietnam to "Vietnam"
+conflict.data$location[conflict.data$location == "Vietnam (North Vietnam)"] <- "Vietnam"
+conflict.data$location[conflict.data$location == "South Vietnam"] <- "Vietnam"
+#rename "United States of America" to "United States"
+conflict.data$location[conflict.data$location == "United States of America"] <- "United States"
+#rename "Myanmar (Burma)" to "Myanmar"
+conflict.data$location[conflict.data$location == "Myanmar (Burma)"] <- "Myanmar"
+#rename "DR Congo (Zaire)" to "Congo, Dem. Rep."
+conflict.data$location[conflict.data$location == "DR Congo (Zaire)"] <- "Congo, Dem. Rep."
+#rename "Rumania" to "Romania"
+conflict.data$location[conflict.data$location == "Rumania"] <- "Romania"
+#rename "Zimbabwe (Rhodesia)" to "Zimbabwe"
+conflict.data$location[conflict.data$location == "Zimbabwe (Rhodesia)"] <- "Zimbabwe"
+#rename "Serbia (Yugoslavia)" to "Serbia"
+conflict.data$location[conflict.data$location == "Serbia (Yugoslavia)"] <- "Serbia"
+#rename "Bosnia-Herzegovina" to "Bosnia and Herzegovina"
+conflict.data$location[conflict.data$location == "Bosnia-Herzegovina"] <- "Bosnia and Herzegovina"
+#rename "Ivory Coast" to "Cote d'Ivoire"
+conflict.data$location[conflict.data$location == "Ivory Coast"] <- "Cote d'Ivoire"
+#rename "Brunei" to "Brunei Darussalam"
+conflict.data$location[conflict.data$location == "Brunei"] <- "Brunei Darussalam"
+
+#merging to the WBD/SES data set and the conflict set
+WBD.SES.conflict <- merge(conflict.data, WBD.SES, by.y=c("country", "year"), by.x=c("location", "year"), all=TRUE)
+
+
+to.remove <- c("Early-demographic dividend", "East Asia & Pacific (IDA & IBRD countries)", "East Asia & Pacific (excluding high income)", "Europe & Central Asia (excluding high income)", "Europe & Central Asia (IDA & IBRD countries)", "Fragile and conflict affected situations", "Heavily indebted poor countries (HIPC)", "High income", "IBRD only", "IDA & IBRD total", "IDA blend", "IDA only", "IDA total", "Late-demographic dividend", "Latin America & Caribbean (excluding high income)", "Latin America & the Caribbean (IDA & IBRD countries)", "Least developed countries: UN classification", "Low & middle income", "Low income", "Lower middle income", "Middle East & North Africa (excluding high income)", "Middle East & North Africa (IDA & IBRD countries)", "Middle income", "Not classified", "OECD members", "Other small states", "Pacific island small states", "Post-demographic dividend", "Pre-demographic dividend", "Small States", "South Asia (IDA & IBRD)", "Sub-Saharan Africa (excluding high income)", "Sub-Saharan Africa (IDA & IBRD countries)", "Upper middle income")
+WBD.SES.conflict <- WBD.SES.conflict[ !WBD.SES.conflict$location %in% to.remove,]
+
+WBD.SES.conflict %>% select(c(1,2,4,35,45)) %>% filter(year == "1990") %>% head(5)
+```
+
+
+
+# Results
+
+[//]: # "insert link to the shiny app"
+
 
 ### Limitations
 
-## Conclusion
+issued with the conflict set
+issues with "Taiwan" and "Hyderabad" in converting
+
+# Conclusion
 
 # References
