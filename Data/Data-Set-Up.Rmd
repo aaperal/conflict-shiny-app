@@ -75,6 +75,7 @@ rnm = c("SH.XPD.TOTL.ZS" = "health_expenditure",
         "EN.POP.SLUM.UR.ZS" = "slums_population"
         )
 
+library("plyr")
 WBD.data2 <- rename(WBD.data, rnm)
 head(WBD.data2)
 ```
