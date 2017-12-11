@@ -10,18 +10,19 @@
 library(shiny)
 library(ggplot2)
 library(RColorBrewer)
+library(googleVis)
 
 # this function takes a vector of countries
 # and a vector of indicators
 # and returns the data frame with only
 # these countries' specified indicator values
-select_countries <- function(countries, indicator) {
-  indicator <- c(indicator, "year", "location")
+select_countries <- function(countries, indicators) {
+  indicators <- c(indicators, "year", "location")
   countries.data <- data.frame()
   for (i in countries) {
     countries.data <- rbind(countries.data, 
                                 na.omit(WBD.SES.conflict[which(WBD.SES.conflict$location == i),
-                                  indicator]))
+                                  indicators]))
   }
   countries.data
 
@@ -101,29 +102,38 @@ ui <- fluidPage(
   
   # Sidebar with a slider input for number of bins 
   sidebarLayout(
+    
     sidebarPanel(
-      sliderInput("range", "Range:",
-                  min = 1960, max = 2015,
-                  value = c(1960,2015)),
+      selectInput("plot", "Visualization Type", 
+                  choices=c("World Bank Indicators","Conflict concentration")),
       hr(),
-      
-      fluidRow(
-        column(4, verbatimTextOutput("range"))
-      ),
-      selectizeInput("countries","Country selector", choices = country.name, multiple = TRUE, selected = "Afghanistan"),
-      
-      hr(),
-      fluidRow(column(3, verbatimTextOutput("value"))),
-      selectInput("indicators", "Indicators:", 
-                  choices=colnames(WBD.SES.conflict[,c(29:42,45)])),
-      hr(),
-      helpText("Indicator data from the World Bank.")
+      conditionalPanel(
+        condition = "input.plot == 'World Bank Indicators'",
+        sliderInput("range", "Range:",
+                    min = 1960, max = 2015,
+                    value = c(1960,2015)),
+        hr(),
+        fluidRow(
+          column(4, verbatimTextOutput("range"))
+        ),
+        selectizeInput("countries","Country selector", choices = country.name, multiple = TRUE, selected = "Afghanistan"),
+        
+        hr(),
+        fluidRow(column(3, verbatimTextOutput("value"))),
+        selectInput("indicators", "Indicators:", 
+                    choices=colnames(WBD.SES.conflict[,c(29:42,45)])),
+        hr(),
+        helpText("Indicator data from the World Bank.")
+      )
     ),
     
     
     # Show a plot of the indicators
     mainPanel(
-      plotOutput("indPlot")
+      conditionalPanel(
+        condition = "input.plot == 'World Bank Indicators'",
+        plotOutput("indPlot")
+      )
     )
   )
 )
@@ -132,23 +142,19 @@ ui <- fluidPage(
 server <- function(input, output) {
   
   output$indPlot <- renderPlot({
-  
-    
     # get year range from slider input
     year.range <- { input$range }
     lower <- year.range[1]
     upper <- year.range[2]
     
     # get selected indicators
-    #browser()
     indicator <- input$indicators
-
+  
     # get selected countries
     countries <- input$countries
     # get selected countries' specified indicators
     countries.data <- select_countries(countries, indicator)
     
-    #indicator.vector <- na.omit(WBD.SES.conflict[which(WBD.SES.conflict$location == country), c("fetility_rate", "year")])
     # only display the years in range
     countries.data <- countries.data[which(countries.data$year >= lower & countries.data$year <= upper),]
     
@@ -157,7 +163,17 @@ server <- function(input, output) {
     if (!is.null(countries)) {
       ggplot(countries.data, aes(x = countries.data$year, col=countries.data$location)) + geom_line(aes(y=countries.data[,indicator])) + labs(title = "Trends Over Time", x = "Year", y = indicator, color = "Countries")
     }
+    
   })
+  
+  output$conflictFreq <- renderPlot({
+    # get conflict locations and ids
+    conflicts.loc.id <- WBD.SES.conflict[which(unique(WBD.SES.conflict$conflictid)), "location"]
+    
+  })
+  
+
+  
   
 }
 
