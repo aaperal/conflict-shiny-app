@@ -314,6 +314,10 @@ country.name <- as.character(unique(WBD.SES.conflict[,1]))
 country.name <- iconv(country.name, "", "UTF-8", "?")
 
 country.name
+```
+
+```{r}
+#creating the world map
 
 # library(mapdata)
 # library(maps)
