@@ -75,7 +75,7 @@ rnm = c("SH.XPD.TOTL.ZS" = "health_expenditure",
         "EN.POP.SLUM.UR.ZS" = "slums_population"
         )
 
-WBD.data2 <- rename(WBD.data, rnm)
+WBD.data2 <- plyr::rename(WBD.data, rnm)
 head(WBD.data2)
 ```
 
@@ -314,6 +314,10 @@ country.name <- as.character(unique(WBD.SES.conflict[,1]))
 country.name <- iconv(country.name, "", "UTF-8", "?")
 
 country.name
+```
+
+```{r}
+#creating the world map
 
 # library(mapdata)
 # library(maps)
