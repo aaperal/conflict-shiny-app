@@ -223,8 +223,6 @@ replicate_fcn_example <- function(location.vector) {
   }
   conflict.expanded
 }
-```
-```{r, echo=FALSE}
 # at this point conflict.expanded will be a data frame
 # with one set of expanded rows
 # we want to now add this set of expanded rows to
