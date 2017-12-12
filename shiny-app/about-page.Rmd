@@ -9,6 +9,9 @@ Since the end of the cold war in 1991, 2016 was the fifth most violent year in t
 Our application, explored through the tabs, offers a tool to answer how war and conflict has affected the quality of life of the global citizens. We intergrated the wealth of information available for armed conflicts and various findings on coutry-level data to provide a synthesized view of how armed conflicts affects various nations. By offering this perspective, we can observe that it severely affects countries in which the conflcit takes place and the other side is left unaffected and growing.
 
 Data Sources:
+
 * SES Data Scores by Countries [(Kaggle)](https://www.kaggle.com/sdorius/globses/data)
+
 * World Bank Data [(Indicators)](https://data.worldbank.org/indicator)
+
 * Armed Conflicts from 1949 to 2008 [(UCDP/PRIO)](https://www.prio.org/Data/Armed-Conflict/UCDP-PRIO/)
