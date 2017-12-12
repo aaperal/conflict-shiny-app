@@ -12,6 +12,7 @@ library(ggplot2)
 library(RColorBrewer)
 library(plotly)
 library(networkD3)
+library(ggthemes)
 
 # this function takes a vector of countries
 # and a vector of indicators
@@ -181,7 +182,8 @@ server <- function(input, output) {
     countries.data <- merge(countries.data, map.count.data, by="location", all=FALSE)
     # draw the line graph with the specified number of bins
     if (!is.null(countries) && !is.null(countries.data)) {
-      ggplot() + geom_line(data=countries.data, aes(x = countries.data$year, y = (countries.data[,indicator]),col=countries.data$location, size = countries.data$count))  + labs(title = "Trends Over Time", x = "Year", y = input$indicators, color = "Countries") + scale_size_continuous(range=c(1.2,3), guide=FALSE) 
+      ggplot(countries.data, aes(year,countries.data[,indicator])) + geom_point(aes(col=countries.data$location, size = countries.data$count)) + geom_line(aes(col=countries.data$location, size = countries.data$count)) + labs(title = "Trends Over Time", x = "Year", y = input$indicators, color = "Countries") + scale_size_continuous(range=c(.5,3), guide=FALSE) + theme_hc(bgcolor = "darkunica") +
+        scale_fill_hc("darkunica") 
     }
     
   })
