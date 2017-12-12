@@ -10,7 +10,7 @@
 library(shiny)
 library(ggplot2)
 library(RColorBrewer)
-library(plotly)
+library(googleVis)
 
 # this function takes a vector of countries
 # and a vector of indicators
@@ -95,20 +95,33 @@ plot_countries <- function(countries, countries.data) {
 
 
 # Define UI for application that draws a histogram
-ui <- fluidPage(
-  
-  # Application title
-  titlePanel("Visualizing Armed Conflicts"),
-  
-  # Sidebar with a slider input for number of bins 
-  sidebarLayout(
+ui <- navbarPage("Navbar!",
+   tabPanel("About",
+            fluidRow(
+              column(6,
+                     includeMarkdown("about-page.rmd")
+              ),
+              column(3,
+                     class="img-polaroid",
+                     img(src="global-war-pic.jpeg",
+                         height = 300, width = 400),
+                     tags$small(
+                       "Source: How the Second World War Turned Into a Global War?",
+                       a(href="http://www.historydiscussion.net/wars/how-the-second-world-war-turned-into-a-global-war/808",
+                         "Link")
+                     )
+                )
+            )
+   ),                
+          
+  tabPanel("Plot",
+    # Application title
+    titlePanel("Visualizing Armed Conflicts"),
     
-    sidebarPanel(
-      selectInput("plot", "Visualization Type", 
-                  choices=c("World Bank Indicators","Conflict concentration")),
-      hr(),
-      conditionalPanel(
-        condition = "input.plot == 'World Bank Indicators'",
+    # Sidebar with a slider input for number of bins 
+    sidebarLayout(
+      
+      sidebarPanel(
         sliderInput("range", "Range:",
                     min = 1960, max = 2015,
                     value = c(1960,2015)),
@@ -117,28 +130,24 @@ ui <- fluidPage(
           column(4, verbatimTextOutput("range"))
         ),
         selectizeInput("countries","Country selector", choices = country.name, multiple = TRUE, selected = "Afghanistan"),
-        
         hr(),
         fluidRow(column(3, verbatimTextOutput("value"))),
         selectInput("indicators", "Indicators:", 
                     choices=colnames(WBD.SES.conflict[,c(29:42,45)])),
         hr(),
         helpText("Indicator data from the World Bank.")
-      ) 
-      
-    ),
-    
-    
-    # Show a plot of the indicators
-    mainPanel(
-      conditionalPanel(
-        condition = "input.plot == 'World Bank Indicators'",
-        plotOutput("indPlot")
       ),
-      conditionalPanel(
-        condition = "input.plot == 'Conflict concentration'",
-        plotlyOutput("conflictMap")
+      
+      mainPanel(
+        plotOutput("indPlot")
       )
+    )
+  ),
+        
+  #Show a plot of the indicators
+  tabPanel("Map",
+    mainPanel(
+        plotlyOutput("conflictFreq")
     )
   )
 )
@@ -171,30 +180,9 @@ server <- function(input, output) {
     
   })
   
-  output$conflictMap <- renderPlotly({
-    # light grey boundaries
-    l <- list(color = toRGB("grey"), width = 0.5)
-    
-    # specify map projection/options
-    g <- list(
-      showframe = FALSE,
-      showcoastlines = FALSE,
-      projection = list(type = 'Mercator')
-    )
-    
-    plot_geo(map.count.data) %>%
-      add_trace(
-        z = ~count, color = ~count, colors = 'Blues', locationmode = 'country names',
-        text = ~location, locations = ~location, marker = list(line = l)
-      ) %>%
-      colorbar(title = 'Number of Conflicts', tickprefix = '') %>%
-      layout(
-        title = 'Number of Conflicts Contested in Country<br>Conflicts from 1946-2016',
-        geo = g
-      )
-    
+  output$conflictFreq <- renderPlotly({
     # get conflict locations and ids
-    #conflicts.loc.id <- WBD.SES.conflict[which(unique(WBD.SES.conflict$conflictid)), "location"]
+    conflicts.loc.id <- WBD.SES.conflict[which(unique(WBD.SES.conflict$conflictid)), "location"]
     
   })
   
