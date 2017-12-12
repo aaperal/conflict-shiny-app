@@ -8,7 +8,7 @@
 #
 #install required apps
 #uncomment the next line to run
-#install.packages(c('shiny','ggplot2','RColorBrewer','plotly','networkD3','ggthemes'))
+#install.packages(c('shiny','ggplot2','RColorBrewer','plotly','networkD3','ggthemes','markdown'))
 
 library(shiny)
 library(ggplot2)
@@ -16,6 +16,7 @@ library(RColorBrewer)
 library(plotly)
 library(networkD3)
 library(ggthemes)
+library(markdown)
 
 # this function takes a vector of countries
 # and a vector of indicators
