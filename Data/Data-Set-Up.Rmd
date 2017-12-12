@@ -41,12 +41,12 @@ library(WDI)
 
 #stored the required variables in a vector to access all at once
 ind = c("health_expenditure" = "SH.XPD.TOTL.ZS",
-        "fetility_rate" = "SP.DYN.TFRT.IN",
+        "fertility_rate" = "SP.DYN.TFRT.IN",
         "life_expectancy_female" = "SP.DYN.LE00.FE.IN",
         "mortality_rate_under5" = "SH.DYN.MORT",
         "children_employment" = "SL.TLF.0714.ZS",
         "labor_force_female" = "SL.TLF.TOTL.FE.ZS",
-        "labor_force_Particpation_rate" ='SL.TLF.CACT.FE.ZS',
+        "labor_force_participation_rate" ='SL.TLF.CACT.FE.ZS',
         "gini_index" = "SI.POV.GINI",
         "refugee_origin" = "SM.POP.REFG.OR",
         "refugee_asylum" = "SM.POP.REFG",
@@ -60,12 +60,12 @@ WBD.data = WDI(indicator = ind, start=1960, end=2015)
 
 #renamed variables to be more appropriate
 rnm = c("SH.XPD.TOTL.ZS" = "health_expenditure",
-        "SP.DYN.TFRT.IN" = "fetility_rate",
+        "SP.DYN.TFRT.IN" = "fertility_rate",
         "SP.DYN.LE00.FE.IN" = "life_expectancy_female",
         "SH.DYN.MORT" = "mortality_rate_under5",
         "SL.TLF.0714.ZS" = "children_employment",
         "SL.TLF.TOTL.FE.ZS" = "labor_force_female",
-        "SL.TLF.CACT.FE.ZS" = "labor_force_Particpation_rate",
+        "SL.TLF.CACT.FE.ZS" = "labor_force_participation_rate",
         "SI.POV.GINI" = "gini_index",
         "SM.POP.REFG.OR" = "refugee_origin",
         "SM.POP.REFG" = "refugee_asylum",
@@ -317,37 +317,40 @@ country.name
 ```
 
 ```{r}
-#creating the world map
-
-# library(mapdata)
-# library(maps)
-# library(ggplot2)
-# world <- map_data("world2Hires")
-# ggplot(data = world, aes(x=long, y=lat, group = group)) + geom_path()
+# creating the world map
 library(rworldmap)
-library(dplyr)
-# wrangling to make data plottable on map
+library(plyr)
+# Data wrangling to make data plottable on world map
+# We count the number of times a conflict has occurred
+# in a given location
 map.data <- WBD.SES.conflict[,c("location","year","conflictid","iso2c")]
 map.data2 <- map.data[which(!is.na(map.data$conflictid)),]
 map.count.data <- map.data2 %>%
   group_by(location) %>%
-  summarize(count=n())
-map.data <- data.frame(unique(map.data[,c("location")]))
-colnames(map.data) <- c("location")
-map.count.data <- merge(map.data, map.count.data, by = "location", all=TRUE)
+  dplyr::summarize(count=n())
+country.names <- data.frame(unique(map.data[,c("location")]))
+colnames(country.names) <- c("location")
+map.count.data <- merge(country.names, map.count.data, by = "location", all=TRUE)
 map.count.data[is.na(map.count.data)] <- 0
 map.count.data[,1] <- iconv(map.count.data[,1], "", "UTF-8", "?")
 
+# create the network map
 
-#na.omit(count)
-# count <- merge(count, map.data, by = "location", all=TRUE)
-# map.data %>%
-#   group_by(location) %>%
-#   summarize()
-# mapped_data <- joinCountryData2Map(map.data, joinCode = "ISO2", nameJoinColumn = "iso2c",nameCountryColumn = "location")
-# mapCountryData(mapped_data, nameColumnToPlot = "count")
-
-
+# More data wrangling.
+# Here we count the number of times an entity
+# has engaged in a conflict.
+conflict.subset <- conflict.data[,c("sidea","side b")]
+colnames(conflict.subset) <- c("sidea","sideb")
+temp.data <- conflict.subset %>%
+    group_by(sidea) %>%
+    dplyr::summarize(count=n())
+temp.data2 <- conflict.subset %>%
+    group_by(sideb) %>%
+    dplyr::summarize(count=n())
+colnames(temp.data2) <- c("sidea","count")
+conflict.freqs <- rbind(temp.data,temp.data2)
+rm(temp.data,temp.data2)
+  
 
 ```
 
