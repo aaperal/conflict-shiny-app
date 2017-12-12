@@ -24,76 +24,76 @@ select_countries <- function(countries, indicator) {
     countries.data <- rbind(countries.data, 
                                 (WBD.SES.conflict[which(WBD.SES.conflict$location == i),
                                   indicators]))
-    countries.data <- countries.data[!is.na(indicator),]
+    countries.data <- countries.data[!is.na(countries.data[,indicator]),]
   }
 countries.data
 }
 
 # this function takes an indicator integer (from checkbox)
 # and turns it into the corrseponding data frame name
-to_df_string <- function(indicator) {
+string_converter <- function(indicator) {
   df.ind <- NULL
-  if (indicator == 1) {
+  if (indicator == "Health Expenditure") {
     df.ind <- "health_expenditure"
-  } else if (indicator == 2) {
-    df.ind <- "fetility_rate"
-  } else if (indicator == 3) {
+  } else if (indicator == "Fertility Rate") {
+    df.ind <- "fertility_rate"
+  } else if (indicator == "Life Expectancy Female") {
     df.ind <- "life_expectancy_female"
-  } else if (indicator == 4) {
+  } else if (indicator == "Mortality Rate Under 5") {
     df.ind <- "mortality_rate_under5"
-  } else if (indicator == 5) {
+  } else if (indicator == "Child Employment") {
     df.ind <- "children_employment"
-  } else if (indicator == 6) {
+  } else if (indicator == "Labor Force Female") {
     df.ind <- "labor_force_female"
-  } else if (indicator == 7) {
-    df.ind <- "labor_force_Participation_rate"
-  } else if (indicator == 8) {
+  } else if (indicator == "Labor Force Participation Rate") {
+    df.ind <- "labor_force_participation_rate"
+  } else if (indicator == "Gini Index") {
     df.ind <- "gini_index"
-  } else if (indicator == 9) {
+  } else if (indicator == "Refugee Origin") {
     df.ind <- "refugee_origin"
-  } else if (indicator == 10) {
+  } else if (indicator == "Refugee Asylum") {
     df.ind <- "refugee_asylum"
-  } else if (indicator == 11) {
+  } else if (indicator == "Sanitation Access") {
     df.ind <- "sanitation_access"
-  } else if (indicator == 12) {
+  } else if (indicator == "Water Access") {
     df.ind <- "water_access"
-  } else if (indicator == 13) {
+  } else if (indicator == "Electricity Access") {
     df.ind <- "electricity_access"
-  } else if (indicator == 14) {
+  } else if (indicator == "Slums Population") {
     df.ind <- "slums_population"
+  } else if (indicator == "SES") {
+    df.ind <- "SES"
+  } else if (indicator == "fertility_rate") {
+    df.ind <- "Fertility Rate"
+  } else if (indicator == "life_expectancy_female") {
+    df.ind <- "Life Expectancy Female"
+  } else if (indicator == "mortality_rate_under5") {
+    df.ind <- "Mortality Rate Under 5"
+  } else if (indicator == "children_employment") {
+    df.ind <- "Child Employment"
+  } else if (indicator == "labor_force_female") {
+    df.ind <- "Labor Force Female"
+  } else if (indicator == "labor_force_participation_rate") {
+    df.ind <- "Labor Force Participation Rate"
+  } else if (indicator == "gini_index") {
+    df.ind <- "Gini Index"
+  } else if (indicator == "refugee_origin") {
+    df.ind <- "Refugee Origin"
+  } else if (indicator == "refugee_asylum") {
+    df.ind <- "Refugee Asylum"
+  } else if (indicator == "sanitation_access") {
+    df.ind <- "Sanitation Access"
+  } else if (indicator == "water_access") {
+    df.ind <- "Water Access"
+  } else if (indicator == "electricity_access") {
+    df.ind <- "Electricity Access"
+  } else if (indicator == "slums_population") {
+    df.ind <- "Slums Population"
+  } else if (indicator == "health_expenditure") {
+    df.ind <- "Health Expenditure"
   }
   df.ind
 }
-
-# helper function that returns the necessary
-# geom_line strings
-geom_string <- function(countries, countries.data) {
-  browser()
-  string <- list()
-  country.data <- data.frame()
-  for (i in countries) {
-   country.data <- countries.data[which(countries.data$location == i),]
-   string <- c(string, list(geom_line(aes(y=countries.data[which(countries.data$location == i),]$health_expenditure))))
-  }
-  string
-}
-
-plot_countries <- function(countries, countries.data) {
-  num.countries <- length(countries)
-  color.palette <- brewer.pal(num.countries, "Set3")
-  # need to extract indicator vector for each country
-  # for (i in countries) {
-  #   indicator.vector <- na.omit(WBD.SES.conflict[
-  #     which(WBD.SES.conflict$location == country),
-  #     c("fetility_rate", "year")]) 
-  # }
-  #browser()
-  geoms <- geom_string(countries, countries.data)
-  graph <- ggplot(countries.data, aes(countries.data$year)) + geoms + xlab("Year") + ylab("Health Expenditure")
-  graph
-}
-
-
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
@@ -112,17 +112,17 @@ ui <- fluidPage(
         condition = "input.plot == 'World Bank Indicators'",
         sliderInput("range", "Range:",
                     min = 1960, max = 2015,
-                    value = c(1990,2015)),
+                    value = c(1995,2015), sep = ""),
         hr(),
         fluidRow(
           column(4, verbatimTextOutput("range"))
         ),
-        selectizeInput("countries","Country selector", choices = country.name, multiple = TRUE, selected = "Afghanistan"),
+        selectizeInput("countries","Country selector", choices = country.name, multiple = TRUE, selected = c("India","Canada")),
         
         hr(),
         fluidRow(column(3, verbatimTextOutput("value"))),
         selectInput("indicators", "Indicators:", 
-                    choices=colnames(WBD.SES.conflict[,c(29:42,45)])),
+                    choices=c("Health Expenditure", "Fertility Rate", "Life Expectancy Female", "Mortality Rate Under 5", "Child Employment", "Labor Force Female", "Labor Force Participation Rate", "Gini Index", "Refugee Origin", "Refugee Asylum", "Sanitation Access", "Water Access", "Electricity Access", "Slums Population", "SES")),
         hr(),
         helpText("Indicator data from the World Bank.")
       ),
@@ -170,26 +170,18 @@ server <- function(input, output) {
     upper <- year.range[2]
     
     # get selected indicators
-    indicator <- input$indicators
-  
+    indicator <- string_converter(input$indicators)
     # get selected countries
     countries <- input$countries
     # get selected countries' specified indicators
-    #browser()
     countries.data <- select_countries(countries, indicator)
  
-    #countries.conflicts <- map.data2[which(map.data2 == countries),]
     
-    # only display the years in range
-    
-    #countries.conflicts <- countries.conflicts[which(countries.conflicts$year >= lower & countries.conflicts$year <= upper),]
     countries.data <- countries.data[which(countries.data$year >= lower & countries.data$year <= upper),]
-    #browser()
     countries.data <- merge(countries.data, map.count.data, by="location", all=FALSE)
     # draw the line graph with the specified number of bins
-    #plot_countries(countries, countries.data)
-    if (!is.null(countries)) {
-      ggplot() + geom_line(data=countries.data, aes(x = countries.data$year, y = (countries.data[,indicator]),col=countries.data$location, size = countries.data$count))  + labs(title = "Trends Over Time", x = "Year", y = indicator, color = "Countries") + scale_size_continuous(range=c(1.2,3), guide=FALSE) 
+    if (!is.null(countries) && !is.null(countries.data)) {
+      ggplot() + geom_line(data=countries.data, aes(x = countries.data$year, y = (countries.data[,indicator]),col=countries.data$location, size = countries.data$count))  + labs(title = "Trends Over Time", x = "Year", y = input$indicators, color = "Countries") + scale_size_continuous(range=c(1.2,3), guide=FALSE) 
     }
     
   })
@@ -210,14 +202,11 @@ server <- function(input, output) {
         z = ~count, color = ~count, colors = 'Reds', locationmode = 'country names',
         text = ~location, locations = ~location, marker = list(line = l)
       ) %>%
-      colorbar(title = 'Number of Conflicts', tickprefix = '') %>%
+      colorbar(title = '# Conflicts') %>%
       layout(
-        title = 'Number of Conflicts Contested in Country<br>Conflicts from 1946-2016',
+        title = 'Number of Conflicts Contested in Countries<br>from 1946-2016',
         geo = g
       )
-    
-    # get conflict locations and ids
-    #conflicts.loc.id <- WBD.SES.conflict[which(unique(WBD.SES.conflict$conflictid)), "location"]
     
   })
   
@@ -225,9 +214,6 @@ server <- function(input, output) {
     minimum.count.data <- conflict.freqs[which(conflict.freqs$count >= input$number),1]
     network.data <- merge(minimum.count.data,conflict.subset)
     simpleNetwork(network.data, linkColour = "#fe82b4",charge= -10, nodeColour = "#000", fontSize = input$font, opacity = input$opacity, zoom = TRUE)
-    
-    
-    
   })
 
   
