@@ -11,21 +11,22 @@ library(shiny)
 library(ggplot2)
 library(RColorBrewer)
 library(plotly)
+library(networkD3)
 
 # this function takes a vector of countries
 # and a vector of indicators
 # and returns the data frame with only
 # these countries' specified indicator values
-select_countries <- function(countries, indicators) {
-  indicators <- c(indicators, "year", "location")
+select_countries <- function(countries, indicator) {
+  indicators <- c(indicator, "year", "location", "conflictid")
   countries.data <- data.frame()
   for (i in countries) {
     countries.data <- rbind(countries.data, 
-                                na.omit(WBD.SES.conflict[which(WBD.SES.conflict$location == i),
+                                (WBD.SES.conflict[which(WBD.SES.conflict$location == i),
                                   indicators]))
+    countries.data <- countries.data[!is.na(indicator),]
   }
-  countries.data
-
+countries.data
 }
 
 # this function takes an indicator integer (from checkbox)
@@ -105,13 +106,13 @@ ui <- fluidPage(
     
     sidebarPanel(
       selectInput("plot", "Visualization Type", 
-                  choices=c("World Bank Indicators","Conflict concentration")),
+                  choices=c("World Bank Indicators","Conflict concentration", "Network plot")),
       hr(),
       conditionalPanel(
         condition = "input.plot == 'World Bank Indicators'",
         sliderInput("range", "Range:",
                     min = 1960, max = 2015,
-                    value = c(1960,2015)),
+                    value = c(1990,2015)),
         hr(),
         fluidRow(
           column(4, verbatimTextOutput("range"))
@@ -124,7 +125,17 @@ ui <- fluidPage(
                     choices=colnames(WBD.SES.conflict[,c(29:42,45)])),
         hr(),
         helpText("Indicator data from the World Bank.")
-      ) 
+      ),
+      conditionalPanel(
+        condition = "input.plot == 'Network plot'",
+        sliderInput("number", "Minimum Number of Conflicts:",
+                    min = 0, max = 270,
+                    value = 30),
+        sliderInput("opacity", "Node Opacity", 0.6, min = 0.1,
+                    max = 1, step = .1),
+        sliderInput("font", "Font Size", 11, min = 8,
+                    max = 15, step = .5)
+      )
       
     ),
     
@@ -133,11 +144,17 @@ ui <- fluidPage(
     mainPanel(
       conditionalPanel(
         condition = "input.plot == 'World Bank Indicators'",
-        plotOutput("indPlot")
+        plotOutput("indPlot"),
+        hr(),
+        helpText("Line thickness indicates more incidences of conflict in a country.")
       ),
       conditionalPanel(
         condition = "input.plot == 'Conflict concentration'",
         plotlyOutput("conflictMap")
+      ),
+      conditionalPanel(
+        condition = "input.plot == 'Network plot'",
+        simpleNetworkOutput("networkPlot")
       )
     )
   )
@@ -158,15 +175,21 @@ server <- function(input, output) {
     # get selected countries
     countries <- input$countries
     # get selected countries' specified indicators
+    #browser()
     countries.data <- select_countries(countries, indicator)
+ 
+    #countries.conflicts <- map.data2[which(map.data2 == countries),]
     
     # only display the years in range
-    countries.data <- countries.data[which(countries.data$year >= lower & countries.data$year <= upper),]
     
+    #countries.conflicts <- countries.conflicts[which(countries.conflicts$year >= lower & countries.conflicts$year <= upper),]
+    countries.data <- countries.data[which(countries.data$year >= lower & countries.data$year <= upper),]
+    #browser()
+    countries.data <- merge(countries.data, map.count.data, by="location", all=FALSE)
     # draw the line graph with the specified number of bins
     #plot_countries(countries, countries.data)
     if (!is.null(countries)) {
-      ggplot(countries.data, aes(x = countries.data$year, col=countries.data$location)) + geom_line(aes(y=countries.data[,indicator])) + labs(title = "Trends Over Time", x = "Year", y = indicator, color = "Countries")
+      ggplot() + geom_line(data=countries.data, aes(x = countries.data$year, y = (countries.data[,indicator]),col=countries.data$location, size = countries.data$count))  + labs(title = "Trends Over Time", x = "Year", y = indicator, color = "Countries") + scale_size_continuous(range=c(1.2,3), guide=FALSE) 
     }
     
   })
@@ -184,7 +207,7 @@ server <- function(input, output) {
     
     plot_geo(map.count.data) %>%
       add_trace(
-        z = ~count, color = ~count, colors = 'Blues', locationmode = 'country names',
+        z = ~count, color = ~count, colors = 'Reds', locationmode = 'country names',
         text = ~location, locations = ~location, marker = list(line = l)
       ) %>%
       colorbar(title = 'Number of Conflicts', tickprefix = '') %>%
@@ -198,6 +221,14 @@ server <- function(input, output) {
     
   })
   
+  output$networkPlot <- renderSimpleNetwork({
+    minimum.count.data <- conflict.freqs[which(conflict.freqs$count >= input$number),1]
+    network.data <- merge(minimum.count.data,conflict.subset)
+    simpleNetwork(network.data, linkColour = "#fe82b4",charge= -10, nodeColour = "#000", fontSize = input$font, opacity = input$opacity, zoom = TRUE)
+    
+    
+    
+  })
 
   
   

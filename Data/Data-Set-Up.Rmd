@@ -317,37 +317,40 @@ country.name
 ```
 
 ```{r}
-#creating the world map
-
-# library(mapdata)
-# library(maps)
-# library(ggplot2)
-# world <- map_data("world2Hires")
-# ggplot(data = world, aes(x=long, y=lat, group = group)) + geom_path()
+# creating the world map
 library(rworldmap)
 library(dplyr)
-# wrangling to make data plottable on map
+# Data wrangling to make data plottable on world map
+# We count the number of times a conflict has occurred
+# in a given location
 map.data <- WBD.SES.conflict[,c("location","year","conflictid","iso2c")]
 map.data2 <- map.data[which(!is.na(map.data$conflictid)),]
 map.count.data <- map.data2 %>%
   group_by(location) %>%
   summarize(count=n())
-map.data <- data.frame(unique(map.data[,c("location")]))
-colnames(map.data) <- c("location")
-map.count.data <- merge(map.data, map.count.data, by = "location", all=TRUE)
-map.count.data[is.na(map.count.data)] <- 0
+country.names <- data.frame(unique(map.data[,c("location")]))
+colnames(country.names) <- c("location")
+map.count.data <- merge(country.names, map.count.data, by = "location", all=TRUE)
+map.count.data[is.na(map.count.data)] <- 0.1
 map.count.data[,1] <- iconv(map.count.data[,1], "", "UTF-8", "?")
 
+# create the network map
 
-#na.omit(count)
-# count <- merge(count, map.data, by = "location", all=TRUE)
-# map.data %>%
-#   group_by(location) %>%
-#   summarize()
-# mapped_data <- joinCountryData2Map(map.data, joinCode = "ISO2", nameJoinColumn = "iso2c",nameCountryColumn = "location")
-# mapCountryData(mapped_data, nameColumnToPlot = "count")
-
-
+# More data wrangling.
+# Here we count the number of times an entity
+# has engaged in a conflict.
+conflict.subset <- conflict.data[,c("sidea","side b")]
+colnames(conflict.subset) <- c("sidea","sideb")
+temp.data <- conflict.subset %>%
+    group_by(sidea) %>%
+    summarize(count=n())
+temp.data2 <- conflict.subset %>%
+    group_by(sideb) %>%
+    summarize(count=n())
+colnames(temp.data2) <- c("sidea","count")
+conflict.freqs <- rbind(temp.data,temp.data2)
+rm(temp.data,temp.data2)
+  
 
 ```
 
