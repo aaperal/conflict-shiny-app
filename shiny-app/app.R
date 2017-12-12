@@ -6,6 +6,9 @@
 #
 #    http://shiny.rstudio.com/
 #
+#install required apps
+#uncomment the next line to run
+#install.packages(c('shiny','ggplot2','RColorBrewer','plotly','networkD3','ggthemes'))
 
 library(shiny)
 library(ggplot2)
