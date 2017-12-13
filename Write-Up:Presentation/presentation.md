@@ -1,4 +1,4 @@
-Changes in Demographic after Armed Conflict
+Visualizing Conflict
 ========================================================
 author: Alan Peral and Kadija Yilla
 date: December 12, 2017
@@ -9,9 +9,9 @@ autosize: true
 Motivation
 ========================================================
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
+- Differences in armed conflict in Western countries vs. Global South
+- Quality of life vs. armed conflict
+- Relationship amongst warring sides
 
 SES Data Set
 ========================================================
@@ -35,8 +35,8 @@ World Bank Data Set
 - Choose 17 Indicators
   - Health expenditure, total (% of GDP)
   - Mortality rate, under-5 (per 1000 live births)
-  - Refugee population by country or territory of asylum ()
-  - Refugee population by country or territory of origin ()
+  - Refugee population by country or territory of asylum
+  - Refugee population by country or territory of origin
   - Access to electricity (% of population)
   
 World Bank Data Set
@@ -56,6 +56,7 @@ Armed Conflict Set
 - Uppsala Conflict Data Program  (UCDP) at the department of Peace and Conflict Research
 - Uppsala University and the Centre for the Study of Civil War at the Peace Research Institute Oslo (PRIO)
 - Internal and external conflict from 1946 to the present
+
 “A contested incompatibility that concerns government and/or
 territory where the use of armed force between two parties, of which at least one is the
 government of a state, results in at least 25 battle-related deaths in a calendar year"
@@ -129,7 +130,15 @@ Final Set
 4                            NA       NA
 5                            NA       NA
 ```
+Limitations
+========================
+- Armed conflict set is under-reported
+- Singular attacks won't have a grand effect on indicators
+- Time
+
 Shiny App
 =========================
 Final Product:
-**shiny link**
+
+https://yillak.shinyapps.io/armed_conflicts2/
+

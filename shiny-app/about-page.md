@@ -14,13 +14,13 @@ the information surrounding the conflict, none accurately depict how the
 conflict has affected the lives of the individuals alive and living
 amidst the war.
 
-Our application, explored through the tabs, offers a tool to answer how
-war and conflict has affected the quality of life of the global
-citizens. We intergrated the wealth of information available for armed
-conflicts and various findings on coutry-level data to provide a
-synthesized view of how armed conflicts affects various nations. By
+Our application, explored through the tabs, offers a tool to answer that
+explores the relationship between quality of life and armed conflict in
+various countries. We intergrated the wealth of information available
+for armed conflicts and various findings on coutry-level data to provide
+a synthesized view of how armed conflicts affects various nations. By
 offering this perspective, we can observe that it severely affects
-countries in which the conflcit takes place and the other side is left
+countries in which the conflict takes place and the other side is left
 unaffected and growing.
 
 Data Sources:

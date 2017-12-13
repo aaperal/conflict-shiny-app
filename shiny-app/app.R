@@ -425,7 +425,7 @@ string_converter <- function(indicator) {
 }
 
 # Define UI for application that draws a histogram
-ui <- navbarPage("Navbar!",
+ui <- navbarPage("",
  tabPanel("About",
           fluidRow(
             column(6,
@@ -497,7 +497,8 @@ ui <- navbarPage("Navbar!",
                                   "Refugee Asylum", "Sanitation Access", "Water Access", "Electricity Access", 
                                   "Slums Population", "SES")),
             hr(),
-            helpText("Indicator data from the World Bank.")
+            helpText("Indicator data from the World Bank."),
+            helpText("Line thickness indicates increased incidences of conflicts.")
           ),
         mainPanel(
           plotOutput("indPlot")
