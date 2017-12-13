@@ -23,17 +23,17 @@ require(plyr)
 
 # Introduction
 
-Since the end of the cold war in 1991, 2016 was the fifth most violent year in the world [@trends]. Currently in 2017, there are more than 40 active conflicts in the world right now. Armed conflicts severely affect the lives of individuals in those countries currently. Most of the data online, outlines the armed conflict and casualties of the war. Others also include an [interactive feature](https://www.irinnews.org/maps-and-graphics/2017/04/04/updated-mapped-world-war) of the global conflict to observe the scale of the conflict, with respect to other nations. One [special interactive map](https://www.cfr.org/interactives/global-conflict-tracker#!/) illustrates how various armed conflict affect US interests. Despite all the information surrounding global conflicts, none accurately depict how the conflict has affected the lives of the individuals alive and living amidst the war.
+Since the end of the cold war in 1991, 2016 has been the fifth most violent year in the world [@trends]. Currently in 2017, there are more than 40 active conflicts in the world. Armed conflicts severely affect the lives of individuals in those countries. Most of the data online outlines the armed conflict and casualties of the many occurring wars. Others also include an [interactive feature](https://www.irinnews.org/maps-and-graphics/2017/04/04/updated-mapped-world-war) of the global conflict to observe the scale of the conflict with respect to other nations. One [special interactive map](https://www.cfr.org/interactives/global-conflict-tracker#!/) illustrates how various armed conflict affect US interests. Despite all the information surrounding global conflicts, none accurately depict how the conflict has affected the lives of the individuals alive and living amidst the war.
 
-War impacts people profoundly, and yet countries like the US insist on engaging in numerous armed conflicts regardless of the outcome. Westernized people, on  account of the privilege awarded by not being engaged in the conflict on a daily basis, rarely understand the impact of war on the population. How has the war impacted education? Are more males leaving school as a result of the conflict? What about women? How has the war impacted the need to have equal education for women? How has the conflict caused the governmental expenditures to changes? Is there more funding for the various industries or are a mojortiy of the funding being exploited to arm the conflict? In addition, do the citizens have access to water, electricity, and housing and basic human necesities? 
+War impacts people profoundly, and yet countries like the US insist on engaging in numerous armed conflicts regardless of the outcome. Westernized people, on  account of the privilege awarded by not being engaged in the conflict on a daily basis, rarely understand the impact of war on the population. How has the war impacted education? Are more males leaving school as a result of the conflict? What about women? How has the war impacted the need to have equal education for women? How has the conflict caused the governmental expenditures to changes? Is there more funding for the various industries or is a majortiy of the funding being directed towards the conflict? In addition, do the citizens have access to water, electricity, housing, and other basic human necesities? 
 
-![World map of the concentration of location conflict. This is an example of one tab of our application.](world-map)  
+![Concentration of conflicts worldwide. This is an example of one tab of our application.](world-map)  
 
-Our application, shown above, offers a tool to explore the relationship between quality of life and armed conflict in various countries. Although we don't think we can answer in full the questions above, our application offers a glimpse to what those answers can look like for various countries relative to each other. In addition, we are interested in evaluating whether there is a difference in locations of armed conflicts in western countries versus the global south and the network of warring sides. We intergrated the wealth of information available for armed conflicts and various findings on coutry-level data to provide a synthesized view of how armed conflicts affects various nations. 
+Our application, shown above, offers a tool to explore the relationship between quality of life and armed conflict in various countries. Although we don't think we can answer in full the questions above, our application offers a glimpse to what those answers can look like for various countries relative to each other. In addition, we are interested in evaluating whether there is a difference in locations of armed conflicts in western countries versus the global south and the network of warring sides. We intergrated the wealth of information available for armed conflicts and various findings on coutry-level data to provide a synthesized view of how armed conflicts affect various nations. 
 
 # Data
 
-The first data set used is from [Kaggle](https://www.kaggle.com/sdorius/globses/data) titled "Country Socioeconomic Status Scores." This data set includes the overall score of socioeconomic sattus by country for every decade since 1880. Socioeconomic Status (SES) Scores measure the accesibility of an individual, household, or community to collective resources. This measure incoprorates, income, wealth, health, and occupation [@Psaki2014]. For each country, this indivudialzied measure is aggregated as a whole to provide the measure for the country.
+The first data set used is from [Kaggle](https://www.kaggle.com/sdorius/globses/data) titled "Country Socioeconomic Status Scores." This data set includes the overall score of socioeconomic status by country for every decade since 1880. Socioeconomic Status (SES) Scores measure the accesibility of an individual, household, or community to collective resources. This measure incoprorates, income, wealth, health, and occupation [@Psaki2014]. For each country, this indivudialzied measure is aggregated as a whole to provide the measure for the country.
 
 ```{r, echo=FALSE}
 library(readr)
@@ -41,7 +41,7 @@ SES.data <- read_csv("GLOB.SES.csv")
 SES.data %>% arrange(country, desc(year)) %>% select(c(2:6,8)) %>% head(5)
 ```
 
-The second set is world data from the World Bank. The data was accessed from an r package `WDI`. Using the r package we choose 17 indicators which we believed were good measures of the well-being of the individuals in the country. The indicators were as follows:
+The second set is world data from the World Bank. The data was accessed from an r package `WDI`. Using the r package we choose 17 indicators which we believed were good measures of the well-being of the individuals in a country. The indicators were as follows:
 
 * health expenditure, total (% of GDP)
 * fertility rate, tota (births per total)
@@ -52,8 +52,8 @@ The second set is world data from the World Bank. The data was accessed from an 
 * labor force, female (% of total labor force)
 * labor force participation rate, female (% of female population ages 15+)(modeled ILO estimate) indicator
 * GINI index (World Bank estimate) indicator
-* Refugee population by country or territory of origin ()
-* Refugee population by country or territory of asylum ()
+* Refugee population by country or territory of origin 
+* Refugee population by country or territory of asylum 
 * Improved sanitation facilities (% of population with access) indicator
 * Improved water source (% of population with access) indicator
 * Access to electricity (% of population) indicator
@@ -120,7 +120,7 @@ WBD.data2 %>% select(2,3,5,6) %>% head(5)
 ```
 
 
-The third and final set is data about armed conflicts from the Uppsala Conflict Data Program  (UCDP) at the department of Peace and Conflict Research, Uppsala University and the Centre for the Study of Civil War at the Peace Research Institute Oslo (PRIO). The  UCDP/PRIO Armed Conflict Dataset represents both internal and external conflict from 1946 to the present. It documents the two sides in the conflict, as well as the location of the conflict, and indicators of intensity and number of fatalities. Armed conflict is defined as [-@ConflictSet]:
+The third and final set is data about armed conflicts from the Uppsala Conflict Data Program  (UCDP) at the department of Peace and Conflict Research, Uppsala University and the Centre for the Study of Civil War at the Peace Research Institute Oslo (PRIO). The  UCDP/PRIO Armed Conflict Dataset (Version 17.1) represents both internal and external conflict from 1946 to the present. It documents the two sides in the conflict, as well as the location of the conflict, and indicators of intensity and number of fatalities. Armed conflict is defined as [-@ConflictSet]:
 
 > “A contested incompatibility that concerns government and/or
 territory where the use of armed force between two parties, of which at least one is the
@@ -135,7 +135,7 @@ conflict.data %>% select(c(2,3,5,10)) %>% head(5)
 
 ### Wrangling
 
-Using the three seperate sets, we were able to construct a comprehsnive data set of all necessary information using data wrangling techniques.First we merged the SES scores set, **SES.data**, with the WBD data, **WBD.data2** by merging based on the country first and then the year. Before the merge was successful, the country names had to be reconciled because of subtle differences in naming techniques. For example, "Korea, Dem. People’s Rep." in the WBD set had to be renamed to "North Korea" as that was the name in te SES set. We choose to rename the countries based on names we thought the general public would be more familiar with. 
+Using the three seperate sets, we were able to construct a comprehensive data set of all necessary information using data wrangling techniques. First we merged the SES scores set, **SES.data**, with the WBD data, **WBD.data2** by merging based on the country first and then the year. Before the merge was successful, the country names had to be reconciled because of subtle differences in naming techniques. For example, "Korea, Dem. People’s Rep." in the WBD set had to be renamed to "North Korea" as that was the name in the SES set. We choose to rename the countries based on names we thought the general public would be more familiar with. 
 
 ```{r, echo=FALSE}
 # we need to rename a couple of countries in both the SES dataset
@@ -189,7 +189,7 @@ WBD.data2$country[WBD.data2$country == "Korea, Rep."] <- "South Korea"
 WBD.SES <- merge(WBD.data2, SES.data, by=c("country", "year"), all=TRUE)
 WBD.SES %>% select(c(1,18:20)) %>% head(5)
 ```
-Next we take the established **WBD.SES** set and merge with the **conflict.data** set based on the "country"/"location." In order to create a tidy data set upon merge, we had to clean-up the conflict set for the "location" variable. For some conflicts in which the conflict occured in different locations globally, we had to seperate the countries in the "location" field and recreate the data for the seperately valued contries. To achieve this we had to create a user-fucnction that replicated the speicified joined countries and duplicated the values in one step. For example, the India vs. Pakistan War of 1965 occured in both India and Pakistan but was represented as "India, Pakistan". 
+Next we take the established **WBD.SES** set and merge with the **conflict.data** set based on the "country"/"location." In order to create a tidy data set upon merge, we had to clean-up the conflict set for the "location" variable. For some conflicts in which the conflict occured in different locations globally, we had to seperate the countries in the "location" field and recreate the data for the seperately valued contries. To achieve this we had to create a user-function that replicated the speicified joined countries and duplicated the values in one step. For example, the India vs. Pakistan War of 1965 occured in both India and Pakistan but was represented as "India, Pakistan". 
 
 ```{r, echo=FALSE}
 conflict.data %>% filter(location == "India, Pakistan") %>% select(c(2,3,5,10)) %>% head(5)
@@ -384,7 +384,7 @@ WBD.SES.conflict %>% select(c(1,2,4,35,45)) %>% filter(year == "1990") %>% head(
 
 The entire shiny application can be accessed by visiting: https://yillak.shinyapps.io/armed_conflicts2/
 
-There a wide range of observations seen through the various apps on the page. When viewing the map graph we see that the countries with a majority of the conflicts are in the global south. The two countries with the most conflicts are India and Mynamar. Doing further research with our data, we observe that the United Kingdom is the first western country in the list and that occurs in the 26th place, having 29 conflicts occuring in that location. But in total, the UK has been involved with 203 armed conflicts globally. Similarly the United States has been in 173 conflicts but only 21 of those have occured within the country. On the other hand, India has been involved with 218 conflicts but 194 have occured in India. This aids to our hypothesis that most conflicts although involving western countries are not fought in those countries therefore most of the effects of the war will not be seen in  the western country, but in the country on the other side of the war.  
+There are a wide range of observations seen through the various apps on the page. When viewing the map graph we see that the countries with a majority of the conflicts are in the global south. The two countries with the most conflicts are India and Mynamar. Doing further research with our data, we observe that the United Kingdom is the first western country in the list and that occurs in the 26th place, having 29 conflicts occuring in that location. But in total, the UK has been involved with 203 armed conflicts globally. Similarly the United States has been in 173 conflicts but only 21 of those have occured within the country. On the other hand, India has been involved with 218 conflicts but 194 have occured in India. This strengthens our hypothesis that although most conflicts might involve western countries, they are not fought in those countries and so most of the effects of the war will be seen not in the western country, but in the country on the other side of the war.  
 
 
 ```{r, echo = FALSE}
@@ -431,9 +431,9 @@ France | 177 | 5
 Ethiopia |203 | 127
 
 
-Using this preliminary results we move on to the "plot" tab to see how the various indicators for quality of life affect the countries at war. We observe that westernized countries, exemplified by the United State and the United Kingdom, score pretty high in most of the variables. They have an above average SES score even in years following huge conflicts. On the other hand, India and Myanmar have SES scores below 25 and are showing no trends of growth over the last 25 years (figure 2). In other indicators such as health expenditure, the trends are similar as previously described. 
+Using these preliminary results we move on to the "plot" tab to see how the various indicators for quality of life affect the countries at war. We observe that westernized countries, exemplified by the United States and the United Kingdom, score rather highly in most of the variables. They have an above average SES score even in years following huge conflicts. On the other hand, India and Myanmar have SES scores below 25 and are showing no trends of growth over the last 25 years (figure 2). In other indicators such as health expenditure, the trends are as previously described. 
 
-One special indicator of interest is the refugee origin/asylum. We see that refugee origin is low, close to zero, for various westernized countries (figure 3). But we see this number fluctuate for other war-torn coutnries. We see a different effect when looking at refugee asylum. Most refugees turn to western countries when seeking asylum (figure 4). This is particularly interesting because the western countries are in as many conflicts, if not more, than the countries in which the individuals are coming from. But because the conflits aren't occuring in those nations directly, the location is seen as safer.
+One special indicator of interest is the refugee origin/asylum. We see that refugee origin is low, close to zero, for various westernized countries (figure 3). But we see this number fluctuate for other war-torn coutnries. We see a different effect when looking at refugee asylum. Most refugees turn to western countries when seeking asylum (figure 4). This is particularly interesting because the western countries are in as many conflicts, if not more, than the countries in which the individuals are coming from. But because the conflicts aren't occuring in those nations directly, the location is seen as safer.
 
 ![SES indicator (score from 1 to 100)](SES-score.png)  
 
@@ -442,7 +442,7 @@ One special indicator of interest is the refugee origin/asylum. We see that refu
 
 ![Refugee Asylum (% of the country population arriving)](refugee-asylum.png)  
 
-The final aspect of the app is a network graph connecting warring sides. When we unlimit the graph to conclude all entities regardless of number of conflicts, we observe that there is a connection between all of them through other entities. But on the other extreme, by increasing the number of conflicts, we observe two disconnected graphs. The two graphs have node centers of India and Myanmar. This makes sense because they have had the most conflicts and, interestingly enough, not in direct conflict with each other.
+The final aspect of the app is a network graph connecting warring sides. When we unlimit the graph to include all entities regardless of number of conflicts, we observe that there is a connection between all of them through other entities. But on the other extreme, by increasing the number of conflicts, we observe two disconnected graphs. The two graphs have node centers of India and Myanmar. This makes sense because they have had the most conflicts and, interestingly enough, have not been in direct conflict with each other.
 
 ### Limitations
 
@@ -458,10 +458,10 @@ The last noteworthy limitation is in the set-up of the conflict set. To get a be
 
 # Conclusion
 
-By merging three different data sets, we were able to create a shiny app to address a couple of key questions: How do various governments and entities connect in their war history? How do war-torn countries, countries in which the conflict occur, differ in statistics from western countries? We found that in a variation of network it is possibile to include all historical entities that have been at war. In addition, a majority of conflicts occur in the global south, as opposed to in western countries although the western acountries are involved in hundreds of conflicts.
+By merging three different data sets, we were able to create a shiny app to address a couple of key questions: How do various governments and entities connect in their war history? How do war-torn countries, countries in which the conflict occur, differ in statistics from western countries? We found that in a variation of network it is possibile to include all historical entities that have been at war. In addition, a majority of conflicts occur in the global south, as opposed to the western countries who are also involved in hundreds of conflicts.
 
-Moving forward, the next step would be to recreate the app using an amended set. In this set, each observation would be one side involved in the conflict, as opposed to the location of the conflict. This will expland our knowledge of the questions stated above. 
+Moving forward, the next step would be to recreate the app using an amended set. In this set, each observation would be one side involved in the conflict, as opposed to the location of the conflict. This will expand our knowledge of the questions stated above. 
 
-Overall, this was a very fun project to undertake. We learned a lot along the way while encountering and solving many challenges. We were able to apply some techniques we learned and for that we thank [Professor Hardin](http://research.pomona.edu/johardin/) for giving us the tools to analyze data. In addition, we learned how to make an interactive application from scratch to create a successful, publishable app. We look forward to continue to expand our knowledge of data science and how to utilize it to answer thought-provoking questions. 
+Overall, this was a very fun project to undertake. We learned a lot along the way while encountering and solving many challenges. We were able to apply some techniques we learned and for that we thank [Professor Hardin](http://research.pomona.edu/johardin/) for giving us the tools to analyze data. In addition, we learned how to make an interactive application from scratch to create a successful, publishable app. We look forward to continuing to expand our knowledge of data science and to utilizing it to answer thought-provoking questions. 
 
 # References
