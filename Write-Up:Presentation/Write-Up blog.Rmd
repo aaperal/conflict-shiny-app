@@ -3,8 +3,8 @@ title: "Visualizing Armed Conflict"
 author: "Alan Peral and Kadija Yilla"
 date: "12/12/2017"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 bibliography: citations.bib
 ---
 
@@ -394,10 +394,11 @@ The entire shiny application can be accessed by visiting: https://yillak.shinyap
 There a wide range of observations seen through the various apps on the page. When viewing the map graph we see that the countries with a majority of the conflicts are in the global south. The two countries with the most conflicts are India and Mynamar. Doing further research with our data, we observe that the United Kingdom is the first western country in the list and that occurs in the 26th place, having 29 conflicts occuring in that location. But in total, the UK has been involved with 203 armed conflicts globally. Similarly the United States has been in 173 conflicts but only 21 of those hace occured within the country. On the other hand, India has been involved with 218 conflicts but 194 has occured in India. This aids to our hypothesis that most conflicts although involving western countries are not fought in those countries therefore most of the effects of the war will not be seen in  the western country, but in the country on the other side of the war. 
 
 ```{r, echo = FALSE}
+map.data <- WBD.SES.conflict[,c("location","year","conflictid","iso2c")]
+map.data2 <- map.data[which(!is.na(map.data$conflictid)),]
 map.count.data <- map.data2 %>%
   group_by(location) %>%
   dplyr::summarize(count=n()) %>% arrange(desc(count))
-map.count.data
 ```
 ```{r, echo=FALSE}
 WBD.SES.conflict2 <- WBD.SES.conflict[which(!is.na(map.data$conflictid)),]
@@ -415,7 +416,7 @@ side.b2 <- side.b2[!is.na(side.b2)]
 ```
 
 ```{r, echo = FALSE}
-name.check <- "Government of United Kingdom"
+name.check <- "Government of Myanmar (Burma)"
 name.check.space <- paste(" ", name.check)
 name.sum1 <- sum(side.a == name.check | side.b == name.check) + sum(side.a == name.check.space | side.b == name.check.space) 
 name.sum2 <- sum(side.a2 == name.check | side.b2 == name.check) + sum(side.a2 == name.check.space | side.b2 == name.check.space) 
@@ -423,29 +424,30 @@ if(is.na(name.sum2) == TRUE) {
   name.sum2 = 0
 }
 name.sum <- name.sum1 + name.sum2
-name.sum.UK
-
-name.check <- "Government of United States of America"
-name.check.space <- paste(" ", name.check)
-name.sum1 <- sum(side.a == name.check | side.b == name.check) + sum(side.a == name.check.space | side.b == name.check.space) 
-name.sum2 <- sum(side.a2 == name.check | side.b2 == name.check) + sum(side.a2 == name.check.space | side.b2 == name.check.space) 
-if(is.na(name.sum2) == TRUE) {
-  name.sum2 = 0
-}
-name.sum <- name.sum1 + name.sum2
-name.sum.USA
-
-name.check <- "Government of India"
-name.check.space <- paste(" ", name.check)
-name.sum1 <- sum(side.a == name.check | side.b == name.check) + sum(side.a == name.check.space | side.b == name.check.space) 
-name.sum2 <- sum(side.a2 == name.check | side.b2 == name.check) + sum(side.a2 == name.check.space | side.b2 == name.check.space) 
-if(is.na(name.sum2) == TRUE) {
-  name.sum2 = 0
-}
-name.sum <- name.sum1 + name.sum2
-name.sum
 ```
-```
+
+Country  | Number of Conflicts (on location and off)| Number of Conflicts on Location
+------------- | ------------- | -------------------
+United States  | 173 | 21
+United Kingdom  | 203 | 29
+Myanmar | 272 | 271
+India | 218 | 194
+France | 177 | 5
+Ethiopia |203 | 127
+
+
+Using this preliminary results we move on to the "plot" tab to see how the various indicators for quality of life affect the countries at war. We observe that westernized countries, exemplified by the United State and the United Kingdom, score pretty high in most of the variables. They have a above average SES score even in years following huge conflicts. On the other hand, the India and Myanmar have SES scores below 25 and showing no trends of growth over the last 25 years (shown in photo below). In other indicators such as health expenditure, the trends are similar as previosuly described. 
+
+One special indicator of interest is the refugee origin/asylum. We see that refugee origin is low, close to zero, for various westernized coutnries. But we see this number fluctuate for other war-torn coutnries. The opposite effect is seen when looking at refugee asylum. Most refugees turn to western countries when seeking asylum. This is particularly intereting because the western countries are in as many conflicts, if not more, than the countries in which the indivuals are coming from. But because the conflits aren't occuring in those nations directly, the location is seen as safer.
+
+![SES indicator (score from 1 to 100)](SES-score.png)  
+
+
+![Refugee Origin (% of the population)](refugee-origin.png)  
+
+![Refugee Asylum (% of the population)](refugee-asylum.png)  
+
+The final aspect of the 
 
 
 ### Limitations
