@@ -1,5 +1,5 @@
 ---
-title: "Changes in Demographic after Armed Conflict"
+title: "Visualizing Armed Conflict"
 author: "Alan Peral and Kadija Yilla"
 date: "12/12/2017"
 output:
@@ -23,13 +23,18 @@ require(plyr)
 
 # Introduction
 
-Since the end of the cold war in 1991, 2016 was the fifth most violent year in the world [@trends]. Currently in 2017, there are more than 40 active conflicts in the world right now. Armed conflicts severely affect the lives of individuals in those countries currently. Most of the data online, outlines the armed conflict and causlaities of the war. Others also include an [interactive feature](https://www.irinnews.org/maps-and-graphics/2017/04/04/updated-mapped-world-war) of the global conflict to observe the scale of the conflict, with respect to other nations. One [special interactive map](https://www.cfr.org/interactives/global-conflict-tracker#!/) illustrates how various armed conflict affect US interests. Despite all the information surrounding the conflict, none accurately depict how the conflict has affected the lives of the individuals alive and living amidst the war.
+Since the end of the cold war in 1991, 2016 was the fifth most violent year in the world [@trends]. Currently in 2017, there are more than 40 active conflicts in the world right now. Armed conflicts severely affect the lives of individuals in those countries currently. Most of the data online, outlines the armed conflict and casualties of the war. Others also include an [interactive feature](https://www.irinnews.org/maps-and-graphics/2017/04/04/updated-mapped-world-war) of the global conflict to observe the scale of the conflict, with respect to other nations. One [special interactive map](https://www.cfr.org/interactives/global-conflict-tracker#!/) illustrates how various armed conflict affect US interests. Despite all the information surrounding global conflicts, none accurately depict how the conflict has affected the lives of the individuals alive and living amidst the war.
 
 War impacts people profoundly, and yet countries like the US insist on engaging in numerous armed conflicts regardless of the outcome. Westernized people, on  account of the privilege awarded by not being engaged in the conflict on a daily basis, rarely underatand the impact of war on the population. How has the war impacted education? Are more males leaving school as a result of the conflict? What about women? How has the war impacted the need to have equal education for women? How has the conflict caused the governmental expenditures to changes? Is there more funding for the various industries or are a mojortiy of the funding being exploited to arm the conflict? In addition, do the citizens have access to water, electricity, and housing and basic human rights? 
 
-[//]: # "insert picture of the shiny app that addresses one of these questions"
+```{r, echo=FALSE}
 
-Our application, explored through the tabs, offers a tool to answer the questions as well as a variety of other questions. We intergrated the wealth of information available for armed conflicts and various findings on coutry-level data to provide a synthesized view of how armed conflicts affects various nations. By offering this perspective, we can observe that it severely affects countries in which the conflcit takes place and the other side is left unaffected and growing.
+#shiny app code
+
+```
+
+
+Our application, shown above, offers a tool to explore the relationship between quality of life and armed conflict in various countries. Although we don't think we can answer in full the questions above, our application offers a glimpse to what those answer can look like for various countries relative to each other. In addition, we are interested in evaluating whether there is a difference in locations of armed conflics in western countries versus the global south and the network of warring sides. We intergrated the wealth of information available for armed conflicts and various findings on coutry-level data to provide a synthesized view of how armed conflicts affects various nations. 
 
 # Data
 
@@ -384,7 +389,63 @@ WBD.SES.conflict %>% select(c(1,2,4,35,45)) %>% filter(year == "1990") %>% head(
 
 # Results
 
-[//]: # "insert link to the shiny app"
+The entire shiny application can be accessed by visiting: https://yillak.shinyapps.io/armed_conflicts2/
+
+There a wide range of observations seen through the various apps on the page. When viewing the map graph we see that the countries with a majority of the conflicts are in the global south. The two countries with the most conflicts are India and Mynamar. Doing further research with our data, we observe that the United Kingdom is the first western country in the list and that occurs in the 26th place, having 29 conflicts occuring in that location. But in total, the UK has been involved with 203 armed conflicts globally. Similarly the United States has been in 173 conflicts but only 21 of those hace occured within the country. On the other hand, India has been involved with 218 conflicts but 194 has occured in India. This aids to our hypothesis that most conflicts although involving western countries are not fought in those countries therefore most of the effects of the war will not be seen in  the western country, but in the country on the other side of the war. 
+
+```{r, echo = FALSE}
+map.count.data <- map.data2 %>%
+  group_by(location) %>%
+  dplyr::summarize(count=n()) %>% arrange(desc(count))
+map.count.data
+```
+```{r, echo=FALSE}
+WBD.SES.conflict2 <- WBD.SES.conflict[which(!is.na(map.data$conflictid)),]
+
+side.a <-unlist(stringi::stri_split(WBD.SES.conflict2$sidea,fixed=', '))
+
+side.b <-unlist(stringi::stri_split(WBD.SES.conflict2$`side b`,fixed=', '))
+
+side.a2 <-unlist(stringi::stri_split(WBD.SES.conflict2$sidea2nd,fixed=', '))
+side.a2 <- side.a2[!is.na(side.a2)]
+
+side.b2 <-unlist(stringi::stri_split(WBD.SES.conflict2$sideb2nd,fixed=', '))
+side.b2 <- side.b2[!is.na(side.b2)]
+
+```
+
+```{r, echo = FALSE}
+name.check <- "Government of United Kingdom"
+name.check.space <- paste(" ", name.check)
+name.sum1 <- sum(side.a == name.check | side.b == name.check) + sum(side.a == name.check.space | side.b == name.check.space) 
+name.sum2 <- sum(side.a2 == name.check | side.b2 == name.check) + sum(side.a2 == name.check.space | side.b2 == name.check.space) 
+if(is.na(name.sum2) == TRUE) {
+  name.sum2 = 0
+}
+name.sum <- name.sum1 + name.sum2
+name.sum.UK
+
+name.check <- "Government of United States of America"
+name.check.space <- paste(" ", name.check)
+name.sum1 <- sum(side.a == name.check | side.b == name.check) + sum(side.a == name.check.space | side.b == name.check.space) 
+name.sum2 <- sum(side.a2 == name.check | side.b2 == name.check) + sum(side.a2 == name.check.space | side.b2 == name.check.space) 
+if(is.na(name.sum2) == TRUE) {
+  name.sum2 = 0
+}
+name.sum <- name.sum1 + name.sum2
+name.sum.USA
+
+name.check <- "Government of India"
+name.check.space <- paste(" ", name.check)
+name.sum1 <- sum(side.a == name.check | side.b == name.check) + sum(side.a == name.check.space | side.b == name.check.space) 
+name.sum2 <- sum(side.a2 == name.check | side.b2 == name.check) + sum(side.a2 == name.check.space | side.b2 == name.check.space) 
+if(is.na(name.sum2) == TRUE) {
+  name.sum2 = 0
+}
+name.sum <- name.sum1 + name.sum2
+name.sum
+```
+```
 
 
 ### Limitations
