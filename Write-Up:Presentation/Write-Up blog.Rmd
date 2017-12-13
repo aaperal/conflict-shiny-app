@@ -1,7 +1,7 @@
 ---
-title: "Visualizing Armed Conflict"
+title: "Visualizing Armed Conflicts"
 author: "Alan Peral and Kadija Yilla"
-date: "12/12/2017"
+date: "12/15/2017"
 output:
   pdf_document: default
   html_document: default
@@ -25,16 +25,11 @@ require(plyr)
 
 Since the end of the cold war in 1991, 2016 was the fifth most violent year in the world [@trends]. Currently in 2017, there are more than 40 active conflicts in the world right now. Armed conflicts severely affect the lives of individuals in those countries currently. Most of the data online, outlines the armed conflict and casualties of the war. Others also include an [interactive feature](https://www.irinnews.org/maps-and-graphics/2017/04/04/updated-mapped-world-war) of the global conflict to observe the scale of the conflict, with respect to other nations. One [special interactive map](https://www.cfr.org/interactives/global-conflict-tracker#!/) illustrates how various armed conflict affect US interests. Despite all the information surrounding global conflicts, none accurately depict how the conflict has affected the lives of the individuals alive and living amidst the war.
 
-War impacts people profoundly, and yet countries like the US insist on engaging in numerous armed conflicts regardless of the outcome. Westernized people, on  account of the privilege awarded by not being engaged in the conflict on a daily basis, rarely underatand the impact of war on the population. How has the war impacted education? Are more males leaving school as a result of the conflict? What about women? How has the war impacted the need to have equal education for women? How has the conflict caused the governmental expenditures to changes? Is there more funding for the various industries or are a mojortiy of the funding being exploited to arm the conflict? In addition, do the citizens have access to water, electricity, and housing and basic human rights? 
+War impacts people profoundly, and yet countries like the US insist on engaging in numerous armed conflicts regardless of the outcome. Westernized people, on  account of the privilege awarded by not being engaged in the conflict on a daily basis, rarely understand the impact of war on the population. How has the war impacted education? Are more males leaving school as a result of the conflict? What about women? How has the war impacted the need to have equal education for women? How has the conflict caused the governmental expenditures to changes? Is there more funding for the various industries or are a mojortiy of the funding being exploited to arm the conflict? In addition, do the citizens have access to water, electricity, and housing and basic human necesities? 
 
-```{r, echo=FALSE}
+![World map of the concentration of location conflict. This is an example of one tab of our application.](world-map)  
 
-#shiny app code
-
-```
-
-
-Our application, shown above, offers a tool to explore the relationship between quality of life and armed conflict in various countries. Although we don't think we can answer in full the questions above, our application offers a glimpse to what those answer can look like for various countries relative to each other. In addition, we are interested in evaluating whether there is a difference in locations of armed conflics in western countries versus the global south and the network of warring sides. We intergrated the wealth of information available for armed conflicts and various findings on coutry-level data to provide a synthesized view of how armed conflicts affects various nations. 
+Our application, shown above, offers a tool to explore the relationship between quality of life and armed conflict in various countries. Although we don't think we can answer in full the questions above, our application offers a glimpse to what those answers can look like for various countries relative to each other. In addition, we are interested in evaluating whether there is a difference in locations of armed conflicts in western countries versus the global south and the network of warring sides. We intergrated the wealth of information available for armed conflicts and various findings on coutry-level data to provide a synthesized view of how armed conflicts affects various nations. 
 
 # Data
 
@@ -243,7 +238,7 @@ difference <- setdiff(conflict.data$location, WBD.SES$country)
 conflict.expanded <- replicate_fcn_example(difference[6])
 conflict.expanded %>% select(c(2,3,5,10)) %>% head(5)
 ```
-In addition, we had to conduct a few name changes to reconcile the differences in set to have a bigger join. The final set which we will be working with is displayed below. The set excludes the regions created in the WBD set for summary purposed such as "Small States" and "Low Middle Income" countries. This set is comprehensive as it includes the SES work for the decade, other country-specific indicators, and information about the conflict for a specific year. 
+In addition, we had to conduct a few name changes to reconcile the differences in the set in order to have a bigger join. The final set which we will be working with is displayed below. The set excludes the regions created in the WBD set for summary purposed such as "Small States" and "Low Middle Income" countries. This set is comprehensive as it includes the SES work for the decade, other country-specific indicators, and information about the conflict for a specific year. 
 
 ```{r, echo=FALSE}
 #function to duplicate multiple countries with the same values 
@@ -385,13 +380,12 @@ WBD.SES.conflict <- WBD.SES.conflict[ !WBD.SES.conflict$location %in% to.remove,
 WBD.SES.conflict %>% select(c(1,2,4,35,45)) %>% filter(year == "1990") %>% head(5)
 ```
 
-
-
 # Results
 
 The entire shiny application can be accessed by visiting: https://yillak.shinyapps.io/armed_conflicts2/
 
-There a wide range of observations seen through the various apps on the page. When viewing the map graph we see that the countries with a majority of the conflicts are in the global south. The two countries with the most conflicts are India and Mynamar. Doing further research with our data, we observe that the United Kingdom is the first western country in the list and that occurs in the 26th place, having 29 conflicts occuring in that location. But in total, the UK has been involved with 203 armed conflicts globally. Similarly the United States has been in 173 conflicts but only 21 of those hace occured within the country. On the other hand, India has been involved with 218 conflicts but 194 has occured in India. This aids to our hypothesis that most conflicts although involving western countries are not fought in those countries therefore most of the effects of the war will not be seen in  the western country, but in the country on the other side of the war. 
+There a wide range of observations seen through the various apps on the page. When viewing the map graph we see that the countries with a majority of the conflicts are in the global south. The two countries with the most conflicts are India and Mynamar. Doing further research with our data, we observe that the United Kingdom is the first western country in the list and that occurs in the 26th place, having 29 conflicts occuring in that location. But in total, the UK has been involved with 203 armed conflicts globally. Similarly the United States has been in 173 conflicts but only 21 of those have occured within the country. On the other hand, India has been involved with 218 conflicts but 194 have occured in India. This aids to our hypothesis that most conflicts although involving western countries are not fought in those countries therefore most of the effects of the war will not be seen in  the western country, but in the country on the other side of the war.  
+
 
 ```{r, echo = FALSE}
 map.data <- WBD.SES.conflict[,c("location","year","conflictid","iso2c")]
@@ -400,6 +394,7 @@ map.count.data <- map.data2 %>%
   group_by(location) %>%
   dplyr::summarize(count=n()) %>% arrange(desc(count))
 ```
+
 ```{r, echo=FALSE}
 WBD.SES.conflict2 <- WBD.SES.conflict[which(!is.na(map.data$conflictid)),]
 
@@ -436,25 +431,37 @@ France | 177 | 5
 Ethiopia |203 | 127
 
 
-Using this preliminary results we move on to the "plot" tab to see how the various indicators for quality of life affect the countries at war. We observe that westernized countries, exemplified by the United State and the United Kingdom, score pretty high in most of the variables. They have a above average SES score even in years following huge conflicts. On the other hand, the India and Myanmar have SES scores below 25 and showing no trends of growth over the last 25 years (shown in photo below). In other indicators such as health expenditure, the trends are similar as previosuly described. 
+Using this preliminary results we move on to the "plot" tab to see how the various indicators for quality of life affect the countries at war. We observe that westernized countries, exemplified by the United State and the United Kingdom, score pretty high in most of the variables. They have an above average SES score even in years following huge conflicts. On the other hand, India and Myanmar have SES scores below 25 and are showing no trends of growth over the last 25 years (figure 2). In other indicators such as health expenditure, the trends are similar as previously described. 
 
-One special indicator of interest is the refugee origin/asylum. We see that refugee origin is low, close to zero, for various westernized coutnries. But we see this number fluctuate for other war-torn coutnries. The opposite effect is seen when looking at refugee asylum. Most refugees turn to western countries when seeking asylum. This is particularly intereting because the western countries are in as many conflicts, if not more, than the countries in which the indivuals are coming from. But because the conflits aren't occuring in those nations directly, the location is seen as safer.
+One special indicator of interest is the refugee origin/asylum. We see that refugee origin is low, close to zero, for various westernized countries (figure 3). But we see this number fluctuate for other war-torn coutnries. We see a different effect when looking at refugee asylum. Most refugees turn to western countries when seeking asylum (figure 4). This is particularly interesting because the western countries are in as many conflicts, if not more, than the countries in which the individuals are coming from. But because the conflits aren't occuring in those nations directly, the location is seen as safer.
 
 ![SES indicator (score from 1 to 100)](SES-score.png)  
 
 
-![Refugee Origin (% of the population)](refugee-origin.png)  
+![Refugee Origin (% of the country population leaving)](refugee-origin.png)  
 
-![Refugee Asylum (% of the population)](refugee-asylum.png)  
+![Refugee Asylum (% of the country population arriving)](refugee-asylum.png)  
 
-The final aspect of the 
-
+The final aspect of the app is a network graph connecting warring sides. When we unlimit the graph to conclude all entities regardless of number of conflicts, we observe that there is a connection between all of them through other entities. But on the other extreme, by increasing the number of conflicts, we observe two disconnected graphs. The two graphs have node centers of India and Myanmar. This makes sense because they have had the most conflicts and, interestingly enough, not in direct conflict with each other.
 
 ### Limitations
 
-issued with the conflict set
-issues with "Taiwan" and "Hyderabad" in converting
+Although our data and app allows us to answer some of our questions, it's important to understand the limitations in the set before we, or anyone, can make generalizations. The most important limitation is in the conflict set. As stated in the code book, one biasedness is as follows:
+
+> “Apart from that, the dataset only includes information when we are quite confident that it is correct. The bias produced by this approach is against the inclusion of conflicts in the earlier decades and in the less-developed world. An armed conflict in a developed country in the 1990s is more likely to be recorded than a conflict in a less developed country in the 1950s.” -- Gleditsch et al. (2002)
+
+This means that some conflict which occured in the middle of the 20th century might be omitted for lack of verifiability. This would be especially the case for less developed countries. The definition of conflict, as mentioned previously, also causes bias towards which conflicts are used. This will cause our analysis to be incorrect in some sense. For example, because of its definition, it might include singular attacks in which over 25 people are killed. One instance is the Omagh bombing in Northern Ireland in 1998. This event, and others like it, would not have significant impact on any of the country-wide indicators used in the plot. 
+
+Another limitation will be in the amount of missing information from the World Bank Data set. None of the variables selected included information for every country in every year. Because of this, there is gaps in our data and thus also in our analysis. 
+
+The last noteworthy limitation is in the set-up of the conflict set. To get a better analysis of our questions, it would have been better to analyze the sides of conflict as well as the location. With this change, we can see which sides are involved and reach more straightforward conclusions about how westernized countries differ from the less developed countries in terms of conflict. 
 
 # Conclusion
+
+By merging three different data sets, we were able to create a shiny app to address a couple of key questions: How do various governments and entities connect in their war history? How do war-torn countries, countries in which the conflict occur, differ in statistics from western countries? We found that in a variation of network it is possibile to include all historical entities that have been at war. In addition, a majority of conflicts occur in the global south, as opposed to in western countries although the western acountries are involved in hundreds of conflicts.
+
+Moving forward, the next step would be to recreate the app using an amended set. In this set, each observation would be one side involved in the conflict, as opposed to the location of the conflict. This will expland our knowledge of the questions stated above. 
+
+Overall, this was a very fun project to undertake. We learned a lot along the way while encountering and solving many challenges. We were able to apply some techniques we learned and for that we thank [Professor Hardin](http://research.pomona.edu/johardin/) for giving us the tools to analyze data. In addition, we learned how to make an interactive application from scratch to create a successful, publishable app. We look forward to continue to expand our knowledge of data science and how to utilize it to answer thought-provoking questions. 
 
 # References
