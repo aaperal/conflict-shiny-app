@@ -238,7 +238,7 @@ difference <- setdiff(conflict.data$location, WBD.SES$country)
 conflict.expanded <- replicate_fcn_example(difference[6])
 conflict.expanded %>% select(c(2,3,5,10)) %>% head(5)
 ```
-In addition, we had to conduct a few name changes to reconcile the differences in the set in order to have a bigger join. The final set which we will be working with is displayed below. The set excludes the regions created in the WBD set for summary purposed such as "Small States" and "Low Middle Income" countries. This set is comprehensive as it includes the SES work for the decade, other country-specific indicators, and information about the conflict for a specific year. 
+In addition, we had to conduct a few name changes to reconcile the differences in the set in order to have a bigger join. The final set which we will be working with is displayed below. The set excludes the regions created in the WBD set for summary purposed such as "Small States" and "Low Middle Income" countries. This set is comprehensive as it includes the SES score for the decade, other country-specific indicators, and information about the conflict for a specific year. 
 
 ```{r, echo=FALSE}
 #function to duplicate multiple countries with the same values 
@@ -458,7 +458,7 @@ The last noteworthy limitation is in the set-up of the conflict set. To get a be
 
 # Conclusion
 
-By merging three different data sets, we were able to create a shiny app to address a couple of key questions: How do various governments and entities connect in their war history? How do war-torn countries, countries in which the conflict occur, differ in statistics from western countries? We found that in a variation of network it is possibile to include all historical entities that have been at war. In addition, a majority of conflicts occur in the global south, as opposed to the western countries who are also involved in hundreds of conflicts.
+By merging three different data sets, we were able to create a shiny app to address a couple of key questions: How do various governments and entities connect in their war history? How do war-torn countries, countries in which the conflict occur, differ in statistics from western countries? We were able to visualize all the historical entities that have been at war and create a network that allows us to see all these connections. By varing the amount of conflicts per entity we saw different variations of the network that we can draw conclusions from. In addition, a majority of conflicts occur in the global south, as opposed to the western countries who are also involved in hundreds of conflicts.
 
 Moving forward, the next step would be to recreate the app using an amended set. In this set, each observation would be one side involved in the conflict, as opposed to the location of the conflict. This will expand our knowledge of the questions stated above. 
 
